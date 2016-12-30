@@ -8,7 +8,8 @@ typedef unsigned char uint8;
 
 void main ()
 {
-    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 10,databuffer[256] = {0};
+    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 10;
+	uint8 databuffer[256] = {0};
     int8 *tmpPtr[3] = {NULL};
     uint8 i = 0,j = 0;
 	uint8 isNumber = 0;
@@ -63,7 +64,7 @@ void main ()
         //*/		
 	}	
     
-	fp = fopen("ReadorWriteResul","r");
+	fp = fopen("./ReadorWriteResult","r");
     if(NULL != fp)
 	{
         i = 0;
@@ -97,13 +98,14 @@ void main ()
 		}
 		fclose(fp);
 	}
+	else{printf("open readresult fail");}
 
 	///*code for test
 	printf("\ndatabuffer is:\n");
-    for(i = 0; i < 256; i++)
+    for(i = 0; i < 32; i++)
 	{
 		printf("0x%x ",databuffer[i]);
-		if(i % 16 == 0)
+		if(i % 16 == 15)
 			printf("\n");
 	}
 	//*/

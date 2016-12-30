@@ -8,9 +8,10 @@ typedef unsigned char uint8;
 
 void main ()
 {
-    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 10;
+    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 10,databuffer[256] = {0};
     int8 *tmpPtr[3] = {NULL};
     uint8 i = 0,j = 0;
+	uint8 isNumber = 0;
 
     FILE *fp = fopen("./ec_fake_ipmi.txt","r");
     if(NULL != fp)
@@ -28,6 +29,7 @@ void main ()
                 tmpStr[i][j++] = tmpchar;
             }
         }
+		fclose(fp);
     }///* code for test
     else {printf("open /tmp/ec_fake_ipmi.txt fail");}
     //*/
@@ -61,5 +63,48 @@ void main ()
         //*/		
 	}	
     
+	fp = fopen("ReadorWriteResul","r");
+    if(NULL != fp)
+	{
+        i = 0;
+		while(EOF != (tmpchar = fgetc(fp)))
+		{
+			if(tmpchar >= 'a' && tmpchar <= 'f')
+			{
+				tmpchar = tmpchar - 'a' + 'A';
+			}
+			
+			if((tmpchar >= 'A' && tmpchar <= 'F')||(tmpchar >= '0' && tmpchar <= '9'))
+			{
+				isNumber = 1;
+				if(tmpchar >= 'A' && tmpchar <= 'F')
+				{
+					databuffer[i] = databuffer[i]*16 + tmpchar - 'A' + 10;
+				}
+				else
+				{
+					databuffer[i] = databuffer[i]*16 + tmpchar - '0';
+				}
+			}
+			else
+			{
+				if(isNumber == 1)
+				{
+					i ++;
+				}
+				isNumber = 0;
+			}
+		}
+		fclose(fp);
+	}
 
+	///*code for test
+	printf("\ndatabuffer is:\n");
+    for(i = 0; i < 256; i++)
+	{
+		printf("0x%x ",databuffer[i]);
+		if(i % 16 == 0)
+			printf("\n");
+	}
+	//*/
 }

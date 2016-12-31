@@ -62,9 +62,11 @@ void main ()
         ///*code for test
         printf("tmpcmd is:\n%s\n",tmpcmd);
         //*/		
-	}	
+	}
+
+	system("cat ./ReadorWriteResult > ./ReadorWriteResult_cpy");
     
-	fp = fopen("./ReadorWriteResult","r");
+	fp = fopen("./ReadorWriteResult_cpy","r");
     if(NULL != fp)
 	{
         i = 0;
@@ -75,7 +77,7 @@ void main ()
 				tmpchar = tmpchar - 'a' + 'A';
 			}
 			
-			if((tmpchar >= 'A' && tmpchar <= 'F')||(tmpchar >= '0' && tmpchar <= '9'))
+			if((tmpchar >= 'A' && tmpchar <= 'F') || (tmpchar >= '0' && tmpchar <= '9'))
 			{
 				isNumber = 1;
 				if(tmpchar >= 'A' && tmpchar <= 'F')
@@ -98,7 +100,7 @@ void main ()
 		}
 		fclose(fp);
 	}
-	else{printf("open readresult fail");}
+	else{printf("open readresult fail\n");}
 
 	///*code for test
 	printf("\ndatabuffer is:\n");

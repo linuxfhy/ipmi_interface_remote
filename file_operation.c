@@ -8,11 +8,12 @@ typedef unsigned char uint8;
 
 void main ()
 {
-    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 10;
+    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 0x20;
 	uint8 databuffer[256] = {0};
     int8 *tmpPtr[3] = {NULL};
     uint8 i = 0,j = 0;
 	uint8 isNumber = 0;
+	int offset_h = 0x2b,offset_l = 0x00;
 
     FILE *fp = fopen("./ec_fake_ipmi.txt","r");
     if(NULL != fp)
@@ -58,6 +59,15 @@ void main ()
 		snprintf(tmpcmd+strlen(tmpcmd),strlen(" -P ")+1," -P ");
 		snprintf(tmpcmd+strlen(tmpcmd),strlen(tmpPtr[2])+1,tmpPtr[2]);
 		snprintf(tmpcmd+strlen(tmpcmd),strlen(" raw 0x06 0x52 0x0B 0xA0 ")+1," raw 0x06 0x52 0x0B 0xA0 ");
+
+		printf("len1 is %d\n",strlen(tmpcmd));
+ 
+        /*why 6+1: strlen("0xMM")==6,add '\0' at string tail,so 6+1*/
+		snprintf(tmpcmd+strlen(tmpcmd),6+1," 0x%02x ",readlen);
+        snprintf(tmpcmd+strlen(tmpcmd),6+1," 0x%02x ",offset_h);
+        snprintf(tmpcmd+strlen(tmpcmd),6+1," 0x%02x ",offset_l);
+
+		printf("len2 is %d\n",strlen(tmpcmd));
 		
         ///*code for test
         printf("tmpcmd is:\n%s\n",tmpcmd);

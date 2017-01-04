@@ -8,8 +8,8 @@ typedef unsigned char uint8;
 
 void main ()
 {
-    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 0x20;
-	uint8 databuffer[256] = {0};
+    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 32;
+	uint8 databuffer[256] = {0x99};
     int8 *tmpPtr[3] = {NULL};
     uint8 i = 0,j = 0;
 	uint8 isNumber = 0;
@@ -33,21 +33,24 @@ void main ()
         }
 		fclose(fp);
     }///* code for test
-    else {printf("open /tmp/ec_fake_ipmi.txt fail");}
+    else 
+	{
+		printf("open /tmp/ec_fake_ipmi.txt fail");
+	}
     //*/
     
     ///* code for test
     for(i = 0; i < 4; i ++)
     {
-        printf("%s\n",tmpStr[i]);
+        printf("%s\n",&tmpStr[i][0]);
     }
     //*/
-	if(0 == strncmp((tmpStr[0]+strlen("ec_fake_ipmi=")),"TRUE",4))
+	if(0 == strncmp((&tmpStr[0][0]+strlen((char*)"ec_fake_ipmi=")),"TRUE",4))
 	{
 		//getuser,getpassword,getcmcip
-		tmpPtr[0] = tmpStr[1]+strlen("cmc_ip=");
-		tmpPtr[1] = tmpStr[2]+strlen("user=");
-		tmpPtr[2] = tmpStr[3]+strlen("password=");
+		tmpPtr[0] = &tmpStr[1][0]+strlen("cmc_ip=");
+		tmpPtr[1] = &tmpStr[2][0]+strlen("user=");
+		tmpPtr[2] = &tmpStr[3][0]+strlen("password=");
 		printf("ip:%s,usr:%s,password:%s\n",tmpPtr[0],tmpPtr[1],tmpPtr[2]);
 
 	/*build cmd:ipmitool -H %ip% -U admin -P admin raw 0x06 0x52 0x0B 0xA0 0x00 0x2B 0x00
@@ -62,7 +65,7 @@ void main ()
 
 		printf("len1 is %d\n",strlen(tmpcmd));
  
-        /*why 6+1: strlen("0xMM")==6,add '\0' at string tail,so 6+1*/
+        /*why 6+1: strlen(" 0xMM ")==6,add '\0' at string tail,so 6+1*/
 		snprintf(tmpcmd+strlen(tmpcmd),6+1," 0x%02x ",readlen);
         snprintf(tmpcmd+strlen(tmpcmd),6+1," 0x%02x ",offset_h);
         snprintf(tmpcmd+strlen(tmpcmd),6+1," 0x%02x ",offset_l);
@@ -80,7 +83,7 @@ void main ()
     if(NULL != fp)
 	{
         i = 0;
-		while(EOF != (tmpchar = fgetc(fp)))
+		while((EOF != (tmpchar = fgetc(fp))) && (i < readlen))
 		{
 			if(tmpchar >= 'a' && tmpchar <= 'f')
 			{
@@ -114,9 +117,17 @@ void main ()
 
 	///*code for test
 	printf("\ndatabuffer is:\n");
+    if((EOF == tmpchar)&&(isNumber ==1))
+	{
+	    i ++;
+	}
+	if(i< readlen)
+	{
+		printf("get too few data\n");
+	}
     for(i = 0; i < 32; i++)
 	{
-		printf("0x%x ",databuffer[i]);
+		printf("0x%02x ",databuffer[i]);
 		if(i % 16 == 15)
 			printf("\n");
 	}

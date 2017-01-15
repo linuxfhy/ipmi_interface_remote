@@ -5,19 +5,19 @@
 typedef char int8;
 typedef int int32;
 typedef unsigned char uint8;
-
+typedef unsigned long long uint64;
 void main ()
 {
-    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 32;
-	uint8 databuffer[256] = {0x99};
+    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 8;
+	uint8 databuffer[256] = {0x99},tmpbuffer[256]={0};
     int8 *tmpPtr[3] = {NULL};
     uint8 i = 0,j = 0;
 	uint8 isNumber = 0;
 	int offset_h = 0x2b,offset_l = 0x00;
+	uint64 wwnn = 0;
 
     FILE *fp = fopen("./ec_fake_ipmi.txt","r");
-    if(NULL != fp)
-    {
+    if(NULL != fp) {
         while(EOF != (tmpchar = fgetc(fp)))
         {
             if('\n' == tmpchar)
@@ -33,20 +33,17 @@ void main ()
         }
 		fclose(fp);
     }///* code for test
-    else 
-	{
+    else {
 		printf("open /tmp/ec_fake_ipmi.txt fail");
 	}
     //*/
     
     ///* code for test
-    for(i = 0; i < 4; i ++)
-    {
+    for(i = 0; i < 4; i ++) {
         printf("%s\n",&tmpStr[i][0]);
     }
     //*/
-	if(0 == strncmp((&tmpStr[0][0]+strlen((char*)"ec_fake_ipmi=")),"TRUE",4))
-	{
+	if(0 == strncmp((&tmpStr[0][0]+strlen((char*)"ec_fake_ipmi=")),"TRUE",4)) {
 		//getuser,getpassword,getcmcip
 		tmpPtr[0] = &tmpStr[1][0]+strlen("cmc_ip=");
 		tmpPtr[1] = &tmpStr[2][0]+strlen("user=");
@@ -77,10 +74,11 @@ void main ()
         //*/		
 	}
 
-	system("cat ./ReadorWriteResult > ./ReadorWriteResult_cpy");
+	system("cat ./ReadorWriteResult >ReadorWriteResult_cpy");
     
 	fp = fopen("./ReadorWriteResult_cpy","r");
-    if(NULL != fp)
+#if 1
+	if(NULL != fp)
 	{
         i = 0;
 		while((EOF != (tmpchar = fgetc(fp))) && (i < readlen))
@@ -115,8 +113,56 @@ void main ()
 	}
 	else{printf("open readresult fail\n");}
 
+	//*/
+	printf("databuffer is:\n");
+    for(i = 0; i < readlen; i++)
+	{
+		printf("0x%02x ",databuffer[i]);
+		if(i % 16 == 15)
+			printf("\n");
+	}
+
+	for(i = 0; i < readlen; i++)
+	{
+		snprintf((char *)(tmpbuffer+strlen(tmpbuffer)),2+1,"%02x",databuffer[i]);
+	}
+	
 	///*code for test
-	printf("\ndatabuffer is:\n");
+	printf("\ntmpbuffer is:\n%s\n",tmpbuffer);
+	//*/
+	strncpy(databuffer,tmpbuffer,strlen(tmpbuffer)+1);
+	printf("databuffer is :\n%s\n",databuffer);
+
+
+#endif
+
+#if 0
+	if(NULL != fp){
+		while((EOF != (tmpchar = fgetc(fp))) && (i < 2*2*readlen))
+		{
+			if(tmpchar >= 'a' && tmpchar <= 'f')
+			{
+				tmpchar = tmpchar - 'a' + 'A';
+			}
+			
+			if((tmpchar >= 'A' && tmpchar <= 'F') || (tmpchar >= '0' && tmpchar <= '9'))
+			{
+				databuffer[i++] = tmpchar;
+			}
+
+		}
+		databuffer[i] = '\0';
+		fclose(fp);
+	
+		
+	}
+	else {
+		printf("open readresult fail\n");
+	}
+	
+#endif
+
+	/*code for test
     if((EOF == tmpchar)&&(isNumber ==1))
 	{
 	    i ++;
@@ -125,11 +171,6 @@ void main ()
 	{
 		printf("get too few data\n");
 	}
-    for(i = 0; i < 32; i++)
-	{
-		printf("0x%02x ",databuffer[i]);
-		if(i % 16 == 15)
-			printf("\n");
-	}
+    printf("\n");
 	//*/
 }

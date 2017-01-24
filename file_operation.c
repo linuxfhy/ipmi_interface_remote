@@ -76,7 +76,8 @@ void main ()
 
 	system("cat ./ReadorWriteResult >ReadorWriteResult_cpy");
     
-	fp = fopen("./ReadorWriteResult_cpy","r");
+	//fp = fopen("./ReadorWriteResult_cpy","r");
+	fp = popen("cat ReadorWriteResult_cpy","r");
 #if 1
 	if(NULL != fp)
 	{
@@ -124,11 +125,13 @@ void main ()
 
 	for(i = 0; i < readlen; i++)
 	{
-		snprintf((char *)(tmpbuffer+strlen(tmpbuffer)),2+1,"%02x",databuffer[i]);
+		snprintf((char *)(tmpbuffer+strlen(tmpbuffer)),4+1,"%03d.",databuffer[i]);
 	}
+
+	tmpbuffer[strlen(tmpbuffer) - 1] = '\0';
 	
 	///*code for test
-	printf("\ntmpbuffer is:\n%s\n",tmpbuffer);
+	printf("\ntmpbuffer is:IP\n%s\n",tmpbuffer);
 	//*/
 	strncpy(databuffer,tmpbuffer,strlen(tmpbuffer)+1);
 	printf("databuffer is :\n%s\n",databuffer);

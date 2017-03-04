@@ -8,13 +8,14 @@ typedef unsigned char uint8;
 typedef unsigned long long uint64;
 void main ()
 {
-    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 8;
+    int8 tmpStr[10][256] = {0},tmpchar,tmpcmd[1024],readlen = 16;
 	uint8 databuffer[256] = {0x99},tmpbuffer[256]={0};
     int8 *tmpPtr[3] = {NULL};
     uint8 i = 0,j = 0;
 	uint8 isNumber = 0;
 	int offset_h = 0x2b,offset_l = 0x00;
 	uint64 wwnn = 0;
+	int32 popen_rc,pclose_rc;
 
     FILE *fp = fopen("./ec_fake_ipmi.txt","r");
     if(NULL != fp) {
@@ -77,7 +78,13 @@ void main ()
 	system("cat ./ReadorWriteResult >ReadorWriteResult_cpy");
     
 	//fp = fopen("./ReadorWriteResult_cpy","r");
-	fp = popen("cat ReadorWriteResult_cpy","r");
+	//fp = popen("cccat ReadorWriteResult_cpy","r");
+	fp = popen("timeout -k1 5 ping 1.1.1.1", "r");//测试不同失败类型的返回码;
+	/*
+	 ping www.baidu.com:0x8d00
+	 timeout -k1 0.1 ping www.baidu.com : 0x7c00
+	 timeout -k1 5 ping 1.1.1.1: 0x7c00,1.1.1.1地址不存在，且 
+	 */
 #if 1
 	if(NULL != fp)
 	{
@@ -110,7 +117,10 @@ void main ()
 				isNumber = 0;
 			}
 		}
-		fclose(fp);
+		pclose_rc = pclose(fp);
+	 	popen_rc = (int32)WEXITSTATUS(pclose_rc);
+		//popen_rc = (int32)WEXITSTATUS(-1);
+		printf("pclose_rc is %d,0x%x,popen_rc is %d,0x%x\n",pclose_rc,pclose_rc, popen_rc, popen_rc);
 	}
 	else{printf("open readresult fail\n");}
 

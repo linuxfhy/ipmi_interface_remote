@@ -13,7 +13,7 @@ function getmasterCMCip()
 	while [ $(($i)) -lt 2 ]
 	do
 		ipaddr[$i]="$((16#${array[4+$((8*$i))]})).$((16#${array[5+$((8*$i))]})).$((16#${array[6+$((8*$i))]})).$((16#${array[7+$((8*$i))]}))"
-		echo "cmc${i}_eth1_ip:"${ipaddr[$i]}
+		#echo "cmc${i}_eth1_ip:"${ipaddr[$i]}
 		readcmd="timeout -k1 1 ipmitool -H ${ipaddr[$i]} -U admin -P admin raw 0x30 0x23"
 		readresult=$(${readcmd})
 		
@@ -22,7 +22,7 @@ function getmasterCMCip()
 			echo "check cmc${i} is master fail,cmd_rc:${cmd_rc}(124:timeout,127:cmd not exist)"
 		fi
 		
-		echo "cmc${i} is: "${readresult}"(1:master,0:slave)"
+		#echo "cmc${i} is:"${readresult}"(1:master,0:slave)"
 		
 		if [ $((${readresult})) = 1 ]; then
 			masterCMCip=${ipaddr[$i]}
@@ -30,6 +30,7 @@ function getmasterCMCip()
 		fi
 	done
 	
+	echo "can't get master cmc ip"
     return 1
 }
 function execcmcipmicmd()
@@ -69,10 +70,7 @@ function execcmcipmicmd()
 	
 	readresult=$(${readcmd})
 	echo "read data is"${readresult}
-	echo
-	echo
-	echo
-
+	
 	array=($readresult)
 	
 	i=0
@@ -125,10 +123,14 @@ echo "write version:001"
 #partnumber:85y5896                                                                          
 execcmcipmicmd 0x00 0x2F 0x56 0x38 0x35 0x59 0x35 0x38 0x39 0x36
 echo "write partnumber:85y5896"
-                                                                          
-#product_sn:S9Y9E6Q																		  
-execcmcipmicmd 0x00 0x2F 0x67 0x53 0x39 0x59 0x39 0x45 0x36 0x51
-echo "write product_sn:S9Y9E6Q"
+
+l=$(($RANDOM%10))
+m=$(($RANDOM%10))
+n=$(($RANDOM%10))
+#product_sn:S9Y9$l$m$n																		  
+execcmcipmicmd 0x00 0x2F 0x67 0x53 0x39 0x59 0x39 0x3$l 0x3$m 0x3$n
+echo "random l,m,n is $l,$m,$n"
+echo "write product_sn:S9Y9$l$m$n"
 
 #vpd_mid_latest_cluster_id_e	00000200640105e2:                                                                         
 execcmcipmicmd 0x00 0x2F 0xA4 0x00 0x00 0x02 0x00 0x64 0x01 0x05 0xe2

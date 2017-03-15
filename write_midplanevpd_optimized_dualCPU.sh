@@ -28,7 +28,7 @@ function getmasterCMCip()
             masterCMCip=${ipaddr[$i]}
             return 0
         fi
-        $i=$(($i+1))
+        i=$(($i+1))
     done
     
     echo "can't get master cmc ip"

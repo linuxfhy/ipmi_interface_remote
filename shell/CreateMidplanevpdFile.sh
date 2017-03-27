@@ -101,6 +101,7 @@ cmd_rc=$?
 while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]
 do
     execcmcipmicmd ${vpdfield[$arr_index]}
+    #echo ${vpdfield[$arr_index]}
     [ $? -eq 0 ] || exit
     arr_index=$(($arr_index+1))
 done

@@ -59,6 +59,14 @@ function execcmcipmicmd()
 }
 
 #script start exec from here
+rm -rf /data/midplanevpdcache
+cmd_rc=$?
+[ ${cmd_rc} -eq 0 ] || (echo "command exec fail,cmd:rm -rf /data/midplanevpdcache,cmd_rc:${cmd_rc}"; exit ${cmd_rc})
+
+mkdir /data/midplanevpdcache
+cmd_rc=$?
+[ ${cmd_rc} -eq 0 ] || (echo "command exec fail,cmd:mkdir /data/midplanevpdcache,cmd_rc:${cmd_rc}"; exit ${cmd_rc})
+
 masterCMCip=192.168.200.42
 
 vpdfield=( "0x04 0x2f 0x60 01"  #mtm part 1

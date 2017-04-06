@@ -4,6 +4,11 @@
 #                                                           BUS  Addr cnt off_h off_l data....
 #ipmitool -H 192.168.200.42 -U admin -P admin raw 0x06 0x52 0x0B 0xA0 0x00 0x2B 0x00
 
+function log()
+{
+    echo $* >>${trcfile}
+}
+
 function getmasterCMCip()
 {
     ip=$(ipmitool raw 0x30 0x14)
@@ -14,14 +19,14 @@ function getmasterCMCip()
     while [ $(($i)) -lt 2 ]
     do
         ipaddr[$i]="$((16#${array[4+$((8*$i))]})).$((16#${array[5+$((8*$i))]})).$((16#${array[6+$((8*$i))]})).$((16#${array[7+$((8*$i))]}))"
-        #echo "cmc${i}_eth1_ip:"${ipaddr[$i]}
+        #log "cmc${i}_eth1_ip:"${ipaddr[$i]}
         readcmd="timeout -k1 1 ipmitool -H ${ipaddr[$i]} -U admin -P admin raw 0x30 0x23"
         readresult=$(${readcmd})
 
         cmd_rc=$?
-        [ ${cmd_rc} -eq 0 ] || echo "check cmc${i} is master fail,cmd_rc:${cmd_rc}(124:timeout,127:cmd not exist)"
+        [ ${cmd_rc} -eq 0 ] || log "check cmc${i} is master fail,cmd_rc:${cmd_rc}(124:timeout,127:cmd not exist)"
 
-        #echo "cmc${i} is:"${readresult}"(1:master,0:slave)"
+        #log "cmc${i} is:"${readresult}"(1:master,0:slave)"
         if [ $((${readresult})) = 1 ]; then
             masterCMCip=${ipaddr[$i]}
             return 0
@@ -29,7 +34,7 @@ function getmasterCMCip()
         i=$(($i+1))
     done
 
-    echo "can't get master cmc ip"
+    log "can't get master cmc ip"
     return 1
 }
 
@@ -37,7 +42,7 @@ function execcmcipmicmd()
 {
     getmasterCMCip
     cmd_rc=$?
-    [ ${cmd_rc} -eq 0 ] || (echo "get master cmc ip fail,cmd_rc is ${cmd_rc}";exit)
+    [ ${cmd_rc} -eq 0 ] || (log "get master cmc ip fail,cmd_rc is ${cmd_rc}";exit)
                                                                                       #BUS  Addr cnt
     readcmd="timeout -k1 1 ipmitool -H ${masterCMCip} -U admin -P admin raw 0x06 0x52 0x0B 0xA0"
     paraindex=1
@@ -50,15 +55,35 @@ function execcmcipmicmd()
     done
 
     filepath="/data/midplanevpdcache/ReadMidplaneVPDcache_${!paraindex}"
-    #echo "${readcmd} >${filepath}" #todo delete this when release
+    #log "${readcmd} >${filepath}" #todo delete this when release
 
     #execute command and check whether execute successfully.
     ${readcmd} >${filepath}
     cmd_rc=$?
-    [ ${cmd_rc} -eq 0 ] || (echo "command exec fail,cmd:${readcmd} >${filepath},cmd_rc:${cmd_rc}"; exit ${cmd_rc})
+    [ ${cmd_rc} -eq 0 ] || (log "command exec fail,cmd:${readcmd} >${filepath},cmd_rc:${cmd_rc}"; exit ${cmd_rc})
 }
 
 #script start exec from here
+AWKCMD=awk
+LSCMD=ls
+
+trcfile="/dumps/createvpdfile.trc"
+
+if [ ! -f ${trcfile} ]
+then
+    touch ${trcfile}
+else
+    typeset -i SZ
+    SZ=$(${LSCMD} -s ${trcfile} | ${AWKCMD} -F " " '{print $1}')
+    SZ=${SZ}*1024
+    if [ $SZ -gt 163840 ]
+    then
+        tail --bytes=163840 ${trcfile} >/tmp/$$ 2>/dev/null
+        mv -f /tmp/$$ ${trcfile} 2>/dev/null
+    fi
+fi
+
+log "============Begin exec script at $(date)============"
 masterCMCip=192.168.200.42
 
 vpdfield=( "0x04 0x2f 0x60 01"  #mtm part 1
@@ -92,16 +117,16 @@ arr_index=0
 
 rm -rf /data/midplanevpdcache
 cmd_rc=$?
-[ ${cmd_rc} -eq 0 ] || (echo "command exec fail,cmd:rm -rf /data/midplanevpdcache,cmd_rc:${cmd_rc}"; exit ${cmd_rc})
+[ ${cmd_rc} -eq 0 ] || (log "command exec fail,cmd:rm -rf /data/midplanevpdcache,cmd_rc:${cmd_rc}"; exit ${cmd_rc})
 
 mkdir /data/midplanevpdcache
 cmd_rc=$?
-[ ${cmd_rc} -eq 0 ] || (echo "command exec fail,cmd:mkdir /data/midplanevpdcache,cmd_rc:${cmd_rc}"; exit ${cmd_rc})
+[ ${cmd_rc} -eq 0 ] || (log "command exec fail,cmd:mkdir /data/midplanevpdcache,cmd_rc:${cmd_rc}"; exit ${cmd_rc})
 
 while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]
 do
     execcmcipmicmd ${vpdfield[$arr_index]}
-    #echo ${vpdfield[$arr_index]}
+    #log ${vpdfield[$arr_index]}
     [ $? -eq 0 ] || exit
     arr_index=$(($arr_index+1))
 done

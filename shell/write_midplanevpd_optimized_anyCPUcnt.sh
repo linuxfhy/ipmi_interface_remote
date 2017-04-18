@@ -123,9 +123,9 @@ echo "write mtm:1815-L0${cpu_cnt}"
 echo
 echo
 
-#version:001                                                                          
+#vpd_mid_version_e:001                                                                          
 execcmcipmicmd 0x00 0x2B 0x24 0x00 0x01
-echo "write version:001"
+echo "write vpd_mid_version_e:001"
 
 #partnumber:85y5896                                                                          
 execcmcipmicmd 0x00 0x2F 0x56 0x38 0x35 0x59 0x35 0x38 0x39 0x36

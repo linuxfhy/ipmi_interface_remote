@@ -62,7 +62,7 @@ function execcmcipmicmd()
     done
     
     #execute command and check whether execute successfully.
-    ${writecmd}
+    ${writecmd} >null
     wirtecmd_rc=$(($?))
     if [ ${wirtecmd_rc} != 0 ]; then
         log "command exec fail,cmd_W:${writecmd},cmd_rc:${wirtecmd_rc}"

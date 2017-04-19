@@ -8,7 +8,7 @@
 
 AWKCMD=awk
 LSCMD=ls
-trcfile="/dumps/createvpdfile.trc"
+trcfile="/dumps/scrumtest.trc"
 masterCMCip=192.168.200.42
 
 function log()
@@ -87,7 +87,7 @@ else
     fi
 fi
 
-echo "============Begin exec script at $(date)============" >>${trcfile}
+echo "============Begin exec script $0 at $(date)============" >>${trcfile}
 
 
 vpdfield=( "0x04 0x2f 0x60 01"  #mtm part 1

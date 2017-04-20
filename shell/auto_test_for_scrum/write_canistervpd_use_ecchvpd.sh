@@ -67,6 +67,8 @@ done
 
 if [ $write_ok = 1 ]; then
     echo "write canister vpd OK"
+    exit 0
 else
     echo "write canister vpd fail"
+    exit 1
 fi

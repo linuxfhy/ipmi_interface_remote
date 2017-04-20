@@ -88,6 +88,8 @@ done
 
 if [ $write_ok = 1 ]; then
     echo "write midplane vpd OK"
+    exit 0
 else
     echo "write midplane vpd fail"
+    exit 1
 fi

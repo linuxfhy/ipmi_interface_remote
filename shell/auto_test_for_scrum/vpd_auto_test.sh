@@ -164,18 +164,18 @@ remote_ip=100.2.45.177
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case3}:exec write_midplanevpd_use_ecchvpd.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case3}:exec write_canistervpd_optimized.sh on local node"
              cur_step=$((${cur_step}+1))
-             sh write_midplanevpd_use_ecchvpd.sh
+             sh write_canistervpd_optimized.sh
         else
             cur_node="local"
-            log "STEP ${cur_step} of ${total_step_case3}:exec write_midplanevpd_use_ecchvpd.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case3}:exec write_canistervpd_optimized.sh on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec "sh /home/root/write_midplanevpd_use_ecchvpd.sh"
+            remote_exec "sh /home/root/write_canistervpd_optimized.sh"
         fi
 
         [ $? -eq 0 ] || {
-            log "exec write_midplanevpd_use_ecchvpd fail on ${cur_node} node"
+            log "executing write_can_vpd use ipmi fail on ${cur_node} node"
             exit 1
         }
 
@@ -203,11 +203,11 @@ remote_ip=100.2.45.177
         log "STEP ${cur_step} of ${total_step_case3}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
         tmp_cmd="diff /home/vpd_test/ec_chvpd_result_${local_can_id} /home/vpd_test/ec_chvpd_result_${remot_can_id}"
         ${tmp_cmd}
-        [ $? -eq 0 ] || {
-            log "ec_chvpd -sa result diff between local and remote,loop $i"
+        [ $? -eq 1 ] || {
+            log "ec_chvpd -sa result same between local and remote node,shoulde be different,loop $i"
             exit 1
         }
-        log "             local/remote ec_chvpd -sa result same"
+        log "             local/remote ec_chvpd -sa result different(should be different)"
         [ $i -eq 0 ] && {
             cur_step=$((${cur_step}+1))
         }

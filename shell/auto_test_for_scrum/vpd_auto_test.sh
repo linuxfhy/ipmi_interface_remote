@@ -88,7 +88,9 @@ remote_ip=100.2.45.177
             exit 1
         }
         log "             local/remote ec_chvpd -sa result same"
-        [ $i -eq 0 ] && { cur_step=$((${cur_step}+1)) }
+        [ $i -eq 0 ] && {
+            cur_step=$((${cur_step}+1))
+        }
     done
     log ">>>>>>test case 1 pase<<<<<<"
 }
@@ -146,7 +148,9 @@ remote_ip=100.2.45.177
             exit 1
         }
         log "             local/remote ec_chvpd -sa result same"
-        [ $i -eq 0 ] && { cur_step=$((${cur_step}+1)) }
+        [ $i -eq 0 ] && {
+            cur_step=$((${cur_step}+1))
+        }
     done
     log ">>>>>>test case2 pase<<<<<<"
 }

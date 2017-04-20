@@ -38,7 +38,7 @@ remote_ip=100.2.45.177
 #test case_1
 {
     log ">>>>>>test case 1 start<<<<<<"
-    total_step_case1=6
+    total_step_case1=8
     cur_step=1
     for((i=0;i<2;i++))
     do
@@ -87,7 +87,8 @@ remote_ip=100.2.45.177
             log "ec_chvpd -sa result diff between local and remote,loop $i"
             exit 1
         }
-        log "local/remote ec_chvpd -sa result same"
+        log "             local/remote ec_chvpd -sa result same"
+        [ $i -eq 0 ] && { cur_step=$((${cur_step}+1)) }
     done
     log ">>>>>>test case 1 pase<<<<<<"
 }
@@ -95,7 +96,7 @@ remote_ip=100.2.45.177
 #test case_2
 {
     log ">>>>>>test case 2 start<<<<<<"
-    total_step_case2=6
+    total_step_case2=8
     cur_step=1
     for((i=0;i<2;i++))
     do
@@ -144,7 +145,8 @@ remote_ip=100.2.45.177
             log "ec_chvpd -sa result diff between local and remote,loop $i"
             exit 1
         }
-        log "local/remote ec_chvpd -sa result same"
+        log "             local/remote ec_chvpd -sa result same"
+        [ $i -eq 0 ] && { cur_step=$((${cur_step}+1)) }
     done
     log ">>>>>>test case2 pase<<<<<<"
 }

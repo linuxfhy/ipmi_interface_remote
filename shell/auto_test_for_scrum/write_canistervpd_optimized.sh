@@ -23,11 +23,11 @@ function execbmcipmicmd()
     done
 
     #execute command and check whether execute successfully.
-    ${writecmd}
+    ${writecmd} >null
     wirtecmd_rc=$(($?))
     if [ ${wirtecmd_rc} != 0 ]; then
         log "command exec fail,cmd_W:${writecmd},cmd_rc:${wirtecmd_rc}"
-        exit
+        exit 1
     fi
 
     log "cmd_W:${writecmd}"
@@ -50,7 +50,7 @@ function execbmcipmicmd()
         if [ $((16#${array[$i]})) != $((${!j})) ]; then
             write_ok=0
             log "read/write data inconsistent:index($i),writedata:$((${!j})),readdata:$((16#${array[$i]}))"
-            exit
+            exit 1
         fi
         i=$(($i+1))
     done

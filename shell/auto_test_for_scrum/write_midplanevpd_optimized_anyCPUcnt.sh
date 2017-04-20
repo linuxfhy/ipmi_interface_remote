@@ -48,7 +48,7 @@ function execcmcipmicmd()
     cmd_rc=$(($?))
     if [ ${cmd_rc} != 0 ]; then
         log "get master cmc ip fail,cmd_rc is ${cmd_rc}"
-        exit
+        exit 1
     fi
                                                                                        #BUS  Addr cnt
     writecmd="timeout -k1 1 ipmitool -H ${valid_cmc_ip} -U admin -P admin raw 0x06 0x52 0x0B 0xA0 0x00"
@@ -66,7 +66,7 @@ function execcmcipmicmd()
     wirtecmd_rc=$(($?))
     if [ ${wirtecmd_rc} != 0 ]; then
         log "command exec fail,cmd_W:${writecmd},cmd_rc:${wirtecmd_rc}"
-        exit
+        exit 1
     fi
     
     log "cmd_W:${writecmd}"    
@@ -89,7 +89,7 @@ function execcmcipmicmd()
         if [ $((16#${array[$i]})) != $((${!j})) ]; then
             write_ok=0
             log "read/write data inconsistent:index($i),writedata:$((${!j})),readdata:$((16#${array[$i]}))"
-            exit
+            exit 1
         fi
         i=$(($i+1))
     done

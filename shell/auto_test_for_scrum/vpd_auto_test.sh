@@ -108,10 +108,10 @@ remote_ip=100.2.45.177
              cur_step=$((${cur_step}+1))
              sh write_midplanevpd_use_ecchvpd.sh
         else
-            cur_node="local"
+            cur_node="remote"
             log "STEP ${cur_step} of ${total_step_case_1_2}:exec write_midplanevpd_use_ecchvpd.sh on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec "sh /home/root/write_midplanevpd_use_ecchvpd.sh"
+            remote_exec ". /home/debug/test_profile; sh /home/root/write_midplanevpd_use_ecchvpd.sh"
         fi
 
         [ $? -eq 0 ] || {

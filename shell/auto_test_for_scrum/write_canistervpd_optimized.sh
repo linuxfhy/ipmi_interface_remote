@@ -30,16 +30,16 @@ function execbmcipmicmd()
         exit 1
     fi
 
-    log "cmd_W:${writecmd}"
+    #log "cmd_W:${writecmd}"
 
     #read data and check weather it equal to write-data
     readcmd="timeout -k1 1 ipmitool raw 0x06 0x52 0x09 0xAC"
     readcnt=$(($#-3))
     readcmd="${readcmd} 0x$(printf %.2x $readcnt) $2 $3"
-    log "cmd_R:${readcmd}"
+    #log "cmd_R:${readcmd}"
 
     readresult=$(${readcmd})
-    log "read data is"${readresult}
+    #log "read data is"${readresult}
 
     array=($readresult)
 

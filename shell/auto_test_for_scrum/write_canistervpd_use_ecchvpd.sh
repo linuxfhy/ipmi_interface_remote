@@ -28,9 +28,9 @@ function write_and_check_vpd()
     }
    
    #readresult="${readresult}222" #inject error
-    log "w_cmd is ${writecmd}"
-    log "r_cmd is ${readcmd}"
-    log "read result is ${readresult}"
+    #log "w_cmd is ${writecmd}"
+    #log "r_cmd is ${readcmd}"
+    #log "read result is ${readresult}"
     
     [ ${readresult} != $2 ] && {
     log "read_write mismatch,read:${readresult},write:$2"

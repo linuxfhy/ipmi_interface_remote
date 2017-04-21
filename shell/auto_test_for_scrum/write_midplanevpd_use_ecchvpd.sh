@@ -51,7 +51,7 @@ cpu_cnt=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
 
 vpdfield=( "vpd_mid_product_mtm_e 1815-L0${cpu_cnt}"
 "vpd_mid_fru_identity_e 11S85Y5962YHU9994G0$l$m$n"
-"vpd_mid_version_e 001"
+#"vpd_mid_version_e 001"
 "vpd_mid_fru_part_number_e 85y5896"
 "vpd_mid_product_sn_e S9Y9$l$m$n"
 "vpd_mid_latest_cluster_id_e 0000000000000000"

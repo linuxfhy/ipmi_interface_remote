@@ -74,7 +74,9 @@ write_ok=1
 
 cpu_cnt=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
 
-vpdfield=( "vpd_can_fru_part_number_e 85y6116"
+vpdfield=( "vpd_can_fru_part_number_e 85y6${l}${m}${n}"
+#"vpd_can_version_e 0504"
+"vpd_can_model_type_e 00000000000000000000000000000000"
 "vpd_can_fru_identity_e 11S85Y6112YHU99900P5E3" )
 arr_mem_cnt=${#vpdfield[@]}
 arr_index=0

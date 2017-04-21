@@ -1,12 +1,21 @@
 #!/bin/bash
 
+AWKCMD=awk
+LSCMD=ls
+trcfile="/dumps/scrumtest.trc"
+
+function log()
+{
+    echo "[$(date -d today +"%Y-%m-%d %H:%M:%S")]" $* >>${trcfile}
+}
+
 function write_and_check_vpd()
 {
     writecmd="ec_chvpd -w -c -n $1 -v $2"
     ${writecmd}
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
-        echo "cmd exec failed,cmd:${writecmd}, cmd_rc:${cmd_rc}"
+        log "cmd exec failed,cmd:${writecmd}, cmd_rc:${cmd_rc}"
         return ${cmd_rc}
     }
     
@@ -14,17 +23,17 @@ function write_and_check_vpd()
     readresult=$(${readcmd})
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
-        echo "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
+        log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
         return ${cmd_rc}
     }
    
    #readresult="${readresult}222" #inject error
-    echo "w_cmd is ${writecmd}"
-    echo "r_cmd is ${readcmd}"
-    echo "read result is ${readresult}"
+    log "w_cmd is ${writecmd}"
+    log "r_cmd is ${readcmd}"
+    log "read result is ${readresult}"
     
     [ ${readresult} != $2 ] && {
-    echo "read_write mismatch,read:${readresult},write:$2"
+    log "read_write mismatch,read:${readresult},write:$2"
     return 1
     }
     
@@ -36,10 +45,26 @@ function write_and_check_vpd_encap()
     write_and_check_vpd $1 $2
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
-        echo "cmd exec failed,para1:$1,para2:$2"
+        log "cmd exec failed,para1:$1,para2:$2"
         return ${cmd_rc}
     }
 }
+
+if [ ! -f ${trcfile} ]
+then
+    touch ${trcfile}
+else
+    typeset -i SZ
+    SZ=$(${LSCMD} -s ${trcfile} | ${AWKCMD} -F " " '{print $1}')
+    SZ=${SZ}*1024
+    if [ $SZ -gt 163840 ]
+    then
+        tail --bytes=163840 ${trcfile} >/tmp/$$ 2>/dev/null
+        mv -f /tmp/$$ ${trcfile} 2>/dev/null
+    fi
+fi
+
+log "============Begin exec script $0 at $(date)============" >>${trcfile}
 
 
 l=$(($RANDOM%10))
@@ -66,9 +91,9 @@ do
 done
 
 if [ $write_ok = 1 ]; then
-    echo "write canister vpd OK"
+    log "write canister vpd OK"
     exit 0
 else
-    echo "write canister vpd fail"
+    log "write canister vpd fail"
     exit 1
 fi

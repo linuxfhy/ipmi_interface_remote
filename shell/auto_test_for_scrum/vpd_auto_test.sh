@@ -195,7 +195,7 @@ remote_ip=100.2.45.177
         remot_can_id=$(remote_exec "cat /dev/canisterid")
         log "STEP ${cur_step} of ${total_step_case_1_3}:exec ec_chvpd -c -sa on remote node"
         cur_step=$((${cur_step}+1))
-        remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -sa" >/home/vpd_test/can_vpd_result_${remot_can_id}
+        remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -c -sa" >/home/vpd_test/can_vpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
             log "exec ec_chvpd -sa fail on remote node"
             exit 1
@@ -232,7 +232,7 @@ remote_ip=100.2.45.177
             cur_node="remote"
             log "STEP ${cur_step} of ${total_step_case4}:exec write_canistervpd_use_ecchvpd.sh on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec "sh /home/root/write_canistervpd_use_ecchvpd.sh"
+            remote_exec ". /home/debug/test_profile; sh /home/root/write_canistervpd_use_ecchvpd.sh"
         fi
 
         [ $? -eq 0 ] || {
@@ -241,7 +241,7 @@ remote_ip=100.2.45.177
         }
 
         local_can_id=$(cat /dev/canisterid)
-        local_cmd="ec_chvpd -sa"
+        local_cmd="ec_chvpd -c -sa"
         local_file_path="/home/vpd_test/ec_chvpd_result_${local_can_id}"
         log "STEP ${cur_step} of ${total_step_case4}:exec ec_chvpd -sa on local node"
         cur_step=$((${cur_step}+1))
@@ -255,7 +255,7 @@ remote_ip=100.2.45.177
         remot_can_id=$(remote_exec "cat /dev/canisterid")
         log "STEP ${cur_step} of ${total_step_case4}:exec ec_chvpd -sa on remote node"
         cur_step=$((${cur_step}+1))
-        remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -sa" >/home/vpd_test/ec_chvpd_result_${remot_can_id}
+        remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -c -sa" >/home/vpd_test/ec_chvpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
             log "exec ec_chvpd -sa fail on remote node"
             exit 1

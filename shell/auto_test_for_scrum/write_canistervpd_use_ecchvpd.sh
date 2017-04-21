@@ -11,7 +11,7 @@ function log()
 
 function write_and_check_vpd()
 {
-    writecmd="ec_chvpd -w -c -n $1 -v $2"
+    writecmd="/compass/ec_chvpd -w -c -n $1 -v $2"
     ${writecmd}
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
@@ -19,7 +19,7 @@ function write_and_check_vpd()
         return ${cmd_rc}
     }
     
-    readcmd="ec_chvpd -r -c -n $1"	
+    readcmd="/compass/ec_chvpd -r -c -n $1"
     readresult=$(${readcmd})
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {

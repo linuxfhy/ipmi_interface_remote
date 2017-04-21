@@ -183,12 +183,12 @@ remote_ip=100.2.45.177
         local_can_id=$(cat /dev/canisterid)
         local_cmd="ec_chvpd -c -sa"
         local_file_path="/home/vpd_test/can_vpd_result_${local_can_id}"
-        log "STEP ${cur_step} of ${total_step_case_1_3}:exec ec_chvpd -sa on local node"
+        log "STEP ${cur_step} of ${total_step_case_1_3}:exec ec_chvpd -c -sa on local node"
         cur_step=$((${cur_step}+1))
 
         ${local_cmd} >${local_file_path}
         [ $? -eq 1 ] || {
-            log "exec ec_chvpd -sa fail on local node,cmd_rc is $?,cmd:$0"
+            log "exec ec_chvpd -c -sa fail on local node,cmd_rc is $?,cmd:$0"
             exit 1
         }
 
@@ -197,7 +197,7 @@ remote_ip=100.2.45.177
         cur_step=$((${cur_step}+1))
         remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -c -sa" >/home/vpd_test/can_vpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
-            log "exec ec_chvpd -sa fail on remote node"
+            log "exec ec_chvpd -c -sa fail on remote node"
             exit 1
         }
 
@@ -205,10 +205,10 @@ remote_ip=100.2.45.177
         tmp_cmd="diff /home/vpd_test/can_vpd_result_${local_can_id} /home/vpd_test/can_vpd_result_${remot_can_id}"
         ${tmp_cmd}
         [ $? -eq 1 ] || {
-            log "ec_chvpd -sa result same between local and remote node,shoulde be different,loop $i"
+            log "ec_chvpd -c -sa result same between local and remote node,shoulde be different,loop $i"
             exit 1
         }
-        log "             local/remote ec_chvpd -sa result different(should be different)"
+        log "             local/remote ec_chvpd -c -sa result different(should be different)"
         [ $i -eq 0 ] && {
             cur_step=$((${cur_step}+1))
         }

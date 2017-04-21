@@ -292,7 +292,19 @@ log ">>>>>>test case 1.4 pass<<<<<<"
 
 #test case 2.1
 log ">>>>>>test case 2.1 start<<<<<<"
+ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x01
 log "This case is same as 1.2,pass"
 log ">>>>>>test case 2.1 pass<<<<<<"
 
+#设置IPMI主从命令
+#ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x00/01
 
+#test case 2.2
+log ">>>>>>test case 2.2 start<<<<<<"
+ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x00
+test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
+log ">>>>>>test case 2.2 pass<<<<<<"
+
+#test case 2.3
+log ">>>>>>test case 2.3 start<<<<<<"
+log ">>>>>>test case 2.2 pass<<<<<<"

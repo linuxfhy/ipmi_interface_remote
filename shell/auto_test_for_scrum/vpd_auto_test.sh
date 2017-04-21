@@ -35,21 +35,21 @@ rm -rf /home/vpd_test
 mkdir /home/vpd_test
 remote_ip=100.2.45.177
 
-#test case_1
+#test case 1.1
 {
-    log ">>>>>>test case 1 start<<<<<<"
-    total_step_case1=8
+    log ">>>>>>test case 1.1 start<<<<<<"
+    total_step_case_1_1=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case1}:exec write_midplanevpd_optimized_anyCPUcnt.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case_1_1}:exec write_midplanevpd_optimized_anyCPUcnt.sh on local node"
              cur_step=$((${cur_step}+1))
              sh write_midplanevpd_optimized_anyCPUcnt.sh
         else
             cur_node="local"
-            log "STEP ${cur_step} of ${total_step_case1}:exec write_midplanevpd_optimized_anyCPUcnt.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case_1_1}:exec write_midplanevpd_optimized_anyCPUcnt.sh on remote node"
             cur_step=$((${cur_step}+1))
             remote_exec "sh /home/root/write_midplanevpd_optimized_anyCPUcnt.sh"
         fi
@@ -62,7 +62,7 @@ remote_ip=100.2.45.177
         local_can_id=$(cat /dev/canisterid)
         local_cmd="ec_chvpd -sa"
         local_file_path="/home/vpd_test/ec_chvpd_result_${local_can_id}"
-        log "STEP ${cur_step} of ${total_step_case1}:exec ec_chvpd -sa on local node"
+        log "STEP ${cur_step} of ${total_step_case_1_1}:exec ec_chvpd -sa on local node"
         cur_step=$((${cur_step}+1))
 
         ${local_cmd} >${local_file_path}
@@ -72,7 +72,7 @@ remote_ip=100.2.45.177
         }
 
         remot_can_id=$(remote_exec "cat /dev/canisterid")
-        log "STEP ${cur_step} of ${total_step_case1}:exec ec_chvpd -sa on remote node"
+        log "STEP ${cur_step} of ${total_step_case_1_1}:exec ec_chvpd -sa on remote node"
         cur_step=$((${cur_step}+1))
         remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -sa" >/home/vpd_test/ec_chvpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
@@ -80,7 +80,7 @@ remote_ip=100.2.45.177
             exit 1
         }
 
-        log "STEP ${cur_step} of ${total_step_case1}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
+        log "STEP ${cur_step} of ${total_step_case_1_1}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
         tmp_cmd="diff /home/vpd_test/ec_chvpd_result_${local_can_id} /home/vpd_test/ec_chvpd_result_${remot_can_id}"
         ${tmp_cmd}
         [ $? -eq 0 ] || {
@@ -92,24 +92,24 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case 1 pase<<<<<<"
+    log ">>>>>>test case 1.1 pass<<<<<<"
 }
 
-#test case_2
+#test case 1.2
 {
-    log ">>>>>>test case 2 start<<<<<<"
-    total_step_case2=8
+    log ">>>>>>test case 1.2 start<<<<<<"
+    total_step_case_1_2=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case2}:exec write_midplanevpd_use_ecchvpd.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case_1_2}:exec write_midplanevpd_use_ecchvpd.sh on local node"
              cur_step=$((${cur_step}+1))
              sh write_midplanevpd_use_ecchvpd.sh
         else
             cur_node="local"
-            log "STEP ${cur_step} of ${total_step_case2}:exec write_midplanevpd_use_ecchvpd.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case_1_2}:exec write_midplanevpd_use_ecchvpd.sh on remote node"
             cur_step=$((${cur_step}+1))
             remote_exec "sh /home/root/write_midplanevpd_use_ecchvpd.sh"
         fi
@@ -122,7 +122,7 @@ remote_ip=100.2.45.177
         local_can_id=$(cat /dev/canisterid)
         local_cmd="ec_chvpd -sa"
         local_file_path="/home/vpd_test/ec_chvpd_result_${local_can_id}"
-        log "STEP ${cur_step} of ${total_step_case2}:exec ec_chvpd -sa on local node"
+        log "STEP ${cur_step} of ${total_step_case_1_2}:exec ec_chvpd -sa on local node"
         cur_step=$((${cur_step}+1))
 
         ${local_cmd} >${local_file_path}
@@ -132,7 +132,7 @@ remote_ip=100.2.45.177
         }
 
         remot_can_id=$(remote_exec "cat /dev/canisterid")
-        log "STEP ${cur_step} of ${total_step_case2}:exec ec_chvpd -sa on remote node"
+        log "STEP ${cur_step} of ${total_step_case_1_2}:exec ec_chvpd -sa on remote node"
         cur_step=$((${cur_step}+1))
         remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -sa" >/home/vpd_test/ec_chvpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
@@ -140,7 +140,7 @@ remote_ip=100.2.45.177
             exit 1
         }
 
-        log "STEP ${cur_step} of ${total_step_case2}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
+        log "STEP ${cur_step} of ${total_step_case_1_2}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
         tmp_cmd="diff /home/vpd_test/ec_chvpd_result_${local_can_id} /home/vpd_test/ec_chvpd_result_${remot_can_id}"
         ${tmp_cmd}
         [ $? -eq 0 ] || {
@@ -152,24 +152,24 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case2 pase<<<<<<"
+    log ">>>>>>test case 1.2 pass<<<<<<"
 }
 
-#test case_3
+#test case 1.3
 {
-    log ">>>>>>test case 3 start<<<<<<"
-    total_step_case3=8
+    log ">>>>>>test case 1.3 start<<<<<<"
+    total_step_case_1_3=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case3}:exec write_canistervpd_optimized.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case_1_3}:exec write_canistervpd_optimized.sh on local node"
              cur_step=$((${cur_step}+1))
              sh write_canistervpd_optimized.sh
         else
             cur_node="local"
-            log "STEP ${cur_step} of ${total_step_case3}:exec write_canistervpd_optimized.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case_1_3}:exec write_canistervpd_optimized.sh on remote node"
             cur_step=$((${cur_step}+1))
             remote_exec "sh /home/root/write_canistervpd_optimized.sh"
         fi
@@ -182,7 +182,7 @@ remote_ip=100.2.45.177
         local_can_id=$(cat /dev/canisterid)
         local_cmd="ec_chvpd -sa"
         local_file_path="/home/vpd_test/ec_chvpd_result_${local_can_id}"
-        log "STEP ${cur_step} of ${total_step_case3}:exec ec_chvpd -sa on local node"
+        log "STEP ${cur_step} of ${total_step_case_1_3}:exec ec_chvpd -sa on local node"
         cur_step=$((${cur_step}+1))
 
         ${local_cmd} >${local_file_path}
@@ -192,7 +192,7 @@ remote_ip=100.2.45.177
         }
 
         remot_can_id=$(remote_exec "cat /dev/canisterid")
-        log "STEP ${cur_step} of ${total_step_case3}:exec ec_chvpd -sa on remote node"
+        log "STEP ${cur_step} of ${total_step_case_1_3}:exec ec_chvpd -sa on remote node"
         cur_step=$((${cur_step}+1))
         remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -sa" >/home/vpd_test/ec_chvpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
@@ -200,7 +200,7 @@ remote_ip=100.2.45.177
             exit 1
         }
 
-        log "STEP ${cur_step} of ${total_step_case3}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
+        log "STEP ${cur_step} of ${total_step_case_1_3}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
         tmp_cmd="diff /home/vpd_test/ec_chvpd_result_${local_can_id} /home/vpd_test/ec_chvpd_result_${remot_can_id}"
         ${tmp_cmd}
         [ $? -eq 1 ] || {
@@ -212,12 +212,12 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case3 pase<<<<<<"
+    log ">>>>>>test case 1.3 pass<<<<<<"
 }
 
-#test case_4
+#test case 1.4
 {
-    log ">>>>>>test case_4 start<<<<<<"
+    log ">>>>>>test case 1.4 start<<<<<<"
     total_step_case4=8
     cur_step=1
     for((i=0;i<2;i++))
@@ -260,7 +260,7 @@ remote_ip=100.2.45.177
             exit 1
         }
 
-        log "STEP ${cur_step} of ${total_step_case3}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
+        log "STEP ${cur_step} of ${total_step_case4}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
         tmp_cmd="diff /home/vpd_test/ec_chvpd_result_${local_can_id} /home/vpd_test/ec_chvpd_result_${remot_can_id}"
         ${tmp_cmd}
         [ $? -eq 1 ] || {
@@ -272,5 +272,10 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case4 pase<<<<<<"
+    log ">>>>>>test case 1.4 pass<<<<<<"
 }
+
+#test case 2.1
+log ">>>>>>test case 2.1 start<<<<<<"
+log "This case is same as 1.2,pass"
+log ">>>>>>test case 2.1 pass<<<<<<"

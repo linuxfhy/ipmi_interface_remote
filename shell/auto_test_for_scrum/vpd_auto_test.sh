@@ -36,27 +36,28 @@ mkdir /home/vpd_test
 remote_ip=100.2.45.177
 
 :<<!
+!
 #test case 1.1
+function test_case_fun_1_1 ()
 {
-    log ">>>>>>test case 1.1 start<<<<<<"
     total_step_case_1_1=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case_1_1}:exec write_midplanevpd_optimized_anyCPUcnt.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case_1_1}:exec $1 on local node"
              cur_step=$((${cur_step}+1))
-             sh write_midplanevpd_optimized_anyCPUcnt.sh
+             sh $1
         else
             cur_node="local"
-            log "STEP ${cur_step} of ${total_step_case_1_1}:exec write_midplanevpd_optimized_anyCPUcnt.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case_1_1}:exec $1 on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec "sh /home/root/write_midplanevpd_optimized_anyCPUcnt.sh"
+            remote_exec "sh /home/root/$1"
         fi
 
         [ $? -eq 0 ] || {
-            log "exec write_midplanevpd_optimized_anyCPUcnt fail on ${cur_node} node"
+            log "exec $1 fail on ${cur_node} node"
             exit 1
         }
 
@@ -93,30 +94,33 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case 1.1 pass<<<<<<"
 }
 
+log ">>>>>>test case 1.1 start<<<<<<"
+test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
+log ">>>>>>test case 1.1 pass<<<<<<"
+
 #test case 1.2
+function test_case_fun_1_2
 {
-    log ">>>>>>test case 1.2 start<<<<<<"
     total_step_case_1_2=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case_1_2}:exec write_midplanevpd_use_ecchvpd.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case_1_2}:exec $1 on local node"
              cur_step=$((${cur_step}+1))
-             sh write_midplanevpd_use_ecchvpd.sh
+             sh $1
         else
             cur_node="remote"
-            log "STEP ${cur_step} of ${total_step_case_1_2}:exec write_midplanevpd_use_ecchvpd.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case_1_2}:exec $1 on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec ". /home/debug/test_profile; sh /home/root/write_midplanevpd_use_ecchvpd.sh"
+            remote_exec ". /home/debug/test_profile; sh /home/root/$1"
         fi
 
         [ $? -eq 0 ] || {
-            log "exec write_midplanevpd_use_ecchvpd fail on ${cur_node} node"
+            log "exec $1 fail on ${cur_node} node"
             exit 1
         }
 
@@ -153,26 +157,30 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case 1.2 pass<<<<<<"
 }
-!
+
+log ">>>>>>test case 1.2 start<<<<<<"
+test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
+log ">>>>>>test case 1.2 pass<<<<<<"
+
+
 #test case 1.3
+function test_case_fun_1_3()
 {
-    log ">>>>>>test case 1.3 start<<<<<<"
     total_step_case_1_3=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case_1_3}:exec write_canistervpd_optimized.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case_1_3}:exec $1 on local node"
              cur_step=$((${cur_step}+1))
-             sh write_canistervpd_optimized.sh
+             sh $1
         else
             cur_node="remote"
-            log "STEP ${cur_step} of ${total_step_case_1_3}:exec write_canistervpd_optimized.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case_1_3}:exec $1 on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec "sh /home/root/write_canistervpd_optimized.sh"
+            remote_exec "sh /home/root/$1"
         fi
 
         [ $? -eq 0 ] || {
@@ -213,30 +221,33 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case 1.3 pass<<<<<<"
 }
 
+log ">>>>>>test case 1.3 start<<<<<<"
+test_case_fun_1_3 write_canistervpd_optimized.sh
+log ">>>>>>test case 1.3 pass<<<<<<"
+
 #test case 1.4
+function test_case_fun_1_4()
 {
-    log ">>>>>>test case 1.4 start<<<<<<"
     total_step_case4=8
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case4}:exec write_canistervpd_use_ecchvpd.sh on local node"
+             log "STEP ${cur_step} of ${total_step_case4}:exec $1 on local node"
              cur_step=$((${cur_step}+1))
-             sh write_canistervpd_use_ecchvpd.sh
+             sh $1
         else
             cur_node="remote"
-            log "STEP ${cur_step} of ${total_step_case4}:exec write_canistervpd_use_ecchvpd.sh on remote node"
+            log "STEP ${cur_step} of ${total_step_case4}:exec $1 on remote node"
             cur_step=$((${cur_step}+1))
-            remote_exec ". /home/debug/test_profile; sh /home/root/write_canistervpd_use_ecchvpd.sh"
+            remote_exec ". /home/debug/test_profile; sh /home/root/$1"
         fi
 
         [ $? -eq 0 ] || {
-            log "exec write_canistervpd_use_ecchvpd.sh fail on ${cur_node} node"
+            log "exec $1 fail on ${cur_node} node"
             exit 1
         }
 
@@ -273,10 +284,15 @@ remote_ip=100.2.45.177
             cur_step=$((${cur_step}+1))
         }
     done
-    log ">>>>>>test case 1.4 pass<<<<<<"
 }
+
+log ">>>>>>test case 1.4 start<<<<<<"
+test_case_fun_1_4 write_canistervpd_use_ecchvpd.sh
+log ">>>>>>test case 1.4 pass<<<<<<"
 
 #test case 2.1
 log ">>>>>>test case 2.1 start<<<<<<"
 log "This case is same as 1.2,pass"
 log ">>>>>>test case 2.1 pass<<<<<<"
+
+

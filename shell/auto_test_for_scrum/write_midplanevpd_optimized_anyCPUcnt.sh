@@ -24,7 +24,7 @@ function get_valid_cmc_ip()
     do
         ipaddr[$i]="$((16#${array[4+$((8*$i))]})).$((16#${array[5+$((8*$i))]})).$((16#${array[6+$((8*$i))]})).$((16#${array[7+$((8*$i))]}))"
         #log "cmc${i}_eth1_ip:"${ipaddr[$i]}
-        readcmd="timeout -k1 1 ipmitool -H ${ipaddr[$i]} -U admin -P admin raw 0x30 0x23"
+        readcmd="timeout -k1 2 ipmitool -H ${ipaddr[$i]} -U admin -P admin raw 0x30 0x23"
         readresult=$(${readcmd})
         
         cmd_rc=$(($?))

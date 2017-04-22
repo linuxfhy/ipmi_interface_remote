@@ -398,7 +398,10 @@ log ">>>>>>test case 2.3 pass<<<<<<"
 log ">>>>>>test case 2.4 start<<<<<<"
 ifconfig eth2 down
 test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
-[ $? -eq 0 ] || exit 1
+[ $? -eq 0 ] || {
+    ifconfig eth2 up
+    exit 1
+}
 ifconfig eth2 up
 log ">>>>>>test case 2.4 pass<<<<<<"
 
@@ -407,7 +410,10 @@ log ">>>>>>test case 2.4 pass<<<<<<"
 log ">>>>>>test case 2.5 start<<<<<<"
 ifconfig eth3 down
 test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
-[ $? -eq 0 ] || exit 1
+[ $? -eq 0 ] || {
+    ifconfig eth3 up
+    exit 1
+}
 ifconfig eth3 up
 log ">>>>>>test case 2.5 pass<<<<<<"
 

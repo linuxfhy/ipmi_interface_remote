@@ -31,8 +31,8 @@ fi
 
 #script start
 log "============Begin exec script $0 at $(date)============" >>${trcfile}
-rm -rf /home/vpd_test
-mkdir /home/vpd_test
+#rm -rf /home/vpd_test
+#mkdir /home/vpd_test
 remote_ip=100.2.45.177
 
 kill_node -f
@@ -444,5 +444,9 @@ function test_case_fun_4_1()
 }
 log ">>>>>>test case 4.1 start<<<<<<"
 test_case_fun_4_1
-[ $? -eq 0 ] || exit 1
+[ $? -eq 0 ] || {
+    exit 1
+}
 log ">>>>>>test case 4.1 pass<<<<<<"
+
+exit 0

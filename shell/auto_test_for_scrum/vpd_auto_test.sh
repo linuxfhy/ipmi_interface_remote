@@ -30,6 +30,7 @@ else
 fi
 
 #script start
+log "============test loop $1 start============" >>${trcfile}
 log "============Begin exec script $0 at $(date)============" >>${trcfile}
 #rm -rf /home/vpd_test
 #mkdir /home/vpd_test
@@ -440,6 +441,7 @@ function test_case_fun_4_1()
             continue
         }
         start_ok=1
+        break
     done
     [ ${start_ok} -eq 1 ] || {
         log "compass_start fail "
@@ -455,4 +457,5 @@ test_case_fun_4_1
 }
 log ">>>>>>test case 4.1 pass<<<<<<"
 
+log "============test loop $1 end============" >>${trcfile}
 exit 0

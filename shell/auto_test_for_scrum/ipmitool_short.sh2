@@ -1,0 +1,39 @@
+#! /bin/bash
+IPMITOOL=/usr/bin/ipmitool.real
+IPMITOOL_TEST_LOG=/dumps/test_ipmi.log
+IPMI_ARGES="$@"
+
+echo "[$(date)] ipmitool $@" >> /dumps/ipmitool.log
+
+#basepath=$PWD #`S=\`readlink "$0"\`; [ -z "$S" ] && S=$0; dirname $S`		#dir of ipmitool.sh2
+#DFILE=$basepath/ipmi.inject
+#[ -e "$DFILE" ] && source "$DFILE"
+
+#[ "$TEST_CASE" != "open" ] && {
+#	$IPMITOOL $IPMI_ARGES
+#	exit $?
+#}
+
+cmc_ipmi_raw_replace()
+{
+   condition="$1"
+   cmd_output="$2"
+   cmd_rc="$3"
+   value="$4"
+   [ -n "$(echo "$IPMI_ARGES" |grep admin |grep "raw" |grep -i "${condition}")" ] && {
+      #$IPMITOOL $IPMI_ARGES | 
+	  echo ${cmd_output} #raw_replace "$column_number" "$value"
+	  sh en_test.sh off
+	  exit ${cmd_rc};
+   }
+}
+
+                           #condition                                        #cmd output                           #cmd return code
+#cmc_ipmi_raw_replace       "raw 0x30 0x23"                                   "hahahaha"                           "127" #check master
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x04 0x2f 0x60"          "31 38 31 35"                        "0"   #mtm part1
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"          "4c 30 31"                           "0"   #mtm part2
+cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x08 0x2f 0xc0"          "56 c9 2b f8 01 00 31 40"            "1"   #node1_wwnn
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"          "4c 30 31"                           "0"   #mtm part2
+
+echo “askldjflkasjdf”
+$IPMITOOL $IPMI_ARGES

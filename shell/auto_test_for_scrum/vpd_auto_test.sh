@@ -40,6 +40,8 @@ kill_node -f
 
 :<<!
 !
+
+
 #test case 1.1
 function test_case_fun_1_1 ()
 {
@@ -63,7 +65,6 @@ function test_case_fun_1_1 ()
             log "exec $1 fail on ${cur_node} node"
             exit 1
         }
-
         local_can_id=$(cat /dev/canisterid)
         local_cmd="ec_chvpd -sa"
         local_file_path="/home/vpd_test/ec_chvpd_result_${local_can_id}"
@@ -456,6 +457,13 @@ test_case_fun_4_1
     exit 1
 }
 log ">>>>>>test case 4.1 pass<<<<<<"
+
+#注入一次执行命令超时
+#test case 6.1
+function test_case_fun_6_1()
+{
+    
+}
 
 log "============test loop $1 end============" >>${trcfile}
 exit 0

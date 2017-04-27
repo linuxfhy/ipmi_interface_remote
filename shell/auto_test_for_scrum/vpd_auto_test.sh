@@ -462,8 +462,14 @@ log ">>>>>>test case 4.1 pass<<<<<<"
 #test case 6.1
 function test_case_fun_6_1()
 {
-    
+    sh write_midplanevpd_use_ecchvpd_inject_err.sh $1
 }
+log ">>>>>>test case 6.1 start<<<<<<"
+test_case_fun_6_1 timeout
+[ $? -eq 0 ] || {
+    exit 1
+}
+log ">>>>>>test case 6.1 pass <<<<<<"
 
 log "============test loop $1 end============" >>${trcfile}
 exit 0

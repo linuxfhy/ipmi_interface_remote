@@ -16,9 +16,11 @@ function log()
 if [[ $1 =~ "short" ]]
 then
     IPMITOOL_SHELL=$PWD/ipmitool_short.sh2
+    log "link ipmitool--->ipmitool_short.sh2"
 elif [[ $1 =~ "timeout" ]]
 then
     IPMITOOL_SHELL=$PWD/ipmitool_timeout.sh2
+    log "link ipmitool--->ipmitool_timeout.sh2"
 fi
 
 IPMI_INJECT=$EN_TEST_DIR/ipmi.inject

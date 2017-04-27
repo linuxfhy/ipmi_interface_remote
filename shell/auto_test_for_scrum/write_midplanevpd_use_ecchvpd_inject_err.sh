@@ -20,25 +20,27 @@ function write_and_check_vpd()
         log "cmd exec failed,cmd:${writecmd}, cmd_rc:${cmd_rc}"
         return ${cmd_rc}
     }
-    
+
     readcmd="/compass/ec_chvpd -r -n $1"
+
+    sh en_test.sh ${ERR_MOD}
     readresult=$(${readcmd})
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
         log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
         return ${cmd_rc}
     }
-   
+
    #readresult="${readresult}222" #inject error
     #log "w_cmd is ${writecmd}"
     #log "r_cmd is ${readcmd}"
     #log "read result is ${readresult}"
-    
+
     [ ${readresult} != $2 ] && {
     log "read_write mismatch,read:${readresult},write:$2"
     return 1
     }
-    
+
     return 0
 }
 

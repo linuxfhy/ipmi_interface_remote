@@ -38,7 +38,7 @@ function write_and_check_vpd()
 
     write_data=$2
 
-    if [ $1 =~ "vpd_mid_version_e" ] || [ $1 =~ "vpd_can_version_e" ]
+    if [[ $1 =~ "vpd_mid_version_e" ]] || [[ $1 =~ "vpd_can_version_e" ]]
     then
         write_data="0${write_data}"
     fi

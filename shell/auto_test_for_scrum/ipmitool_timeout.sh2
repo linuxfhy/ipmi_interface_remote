@@ -21,11 +21,10 @@ cmc_ipmi_raw_replace()
 
                            #condition                                        #cmd output                        #cmd return code
 cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x04 0x2f 0x60"         ""                                    "124"   #mtm part1
-cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"         ""                                    "124"   #mtm part2
-cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x08 0x2f 0xc0"         ""                                    "124"   #node1_wwnn
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"         ""                                    "124"   #mtm part2
 cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x07 0x2f 0x40"         ""                                    "124"   #fru_identity part2
-cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x06 0x2f 0x47"         ""                                    "124"   #fru_identity part3
-cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x06 0x2f 0x4d"         ""                                    "124"   #fru_identity part4
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x06 0x2f 0x47"         ""                                    "124"   #fru_identity part3
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x06 0x2f 0x4d"         ""                                    "124"   #fru_identity part4
 cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2b 0x24"         ""                                    "124"   #version
 cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x07 0x2f 0x56"         ""                                    "124"   #fru_part_number
 cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x07 0x2f 0x67"         ""                                    "124"   #product_sn

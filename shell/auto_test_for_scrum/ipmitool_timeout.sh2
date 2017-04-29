@@ -29,11 +29,9 @@ cmc_ipmi_raw_replace()
 }
 
                            #condition                                        #cmd output                           #cmd return code
-#cmc_ipmi_raw_replace       "raw 0x30 0x23"                                   "hahahaha"                           "127" #check master
-#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x04 0x2f 0x60"          "31 38 31 35"                        "0"   #mtm part1
-#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"          "4c 30 31"                           "0"   #mtm part2
-cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x08 0x2f 0xc0"          "56 c9 2b f8 01 00 31 40"            "1"   #node1_wwnn
-#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"          "4c 30 31"                           "0"   #mtm part2
+cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x04 0x2f 0x60"          ""                                    "124"   #mtm part1
+cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"          ""                                    "124"   #mtm part2
+cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x08 0x2f 0xc0"          ""                                    "124"   #node1_wwnn
+#cmc_ipmi_raw_replace       "raw 0x06 0x52 0x0B 0xA0 0x03 0x2f 0x64"         ""                                    "124"   #mtm part2
 
-echo “askldjflkasjdf”
 $IPMITOOL $IPMI_ARGES

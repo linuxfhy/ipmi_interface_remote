@@ -39,7 +39,7 @@ remote_ip=100.2.45.177
 kill_node -f
 
 :<<!
-!
+#!
 
 
 #test case 1.1
@@ -458,6 +458,7 @@ test_case_fun_4_1
 }
 log ">>>>>>test case 4.1 pass<<<<<<"
 
+!
 #注入一次执行命令超时
 #test case 6.1
 function test_case_fun_6_1()

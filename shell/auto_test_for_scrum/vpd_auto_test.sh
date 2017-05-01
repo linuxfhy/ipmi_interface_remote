@@ -472,5 +472,13 @@ test_case_fun_6_1 timeout
 }
 log ">>>>>>test case 6.1 pass <<<<<<"
 
+log ">>>>>>test case 6.2 start<<<<<<"
+test_case_fun_6_1 short
+[ $? -eq 0 ] || {
+    exit 1
+}
+log ">>>>>>test case 6.2 pass <<<<<<"
+
+
 log "============test loop $1 end============" >>${trcfile}
 exit 0

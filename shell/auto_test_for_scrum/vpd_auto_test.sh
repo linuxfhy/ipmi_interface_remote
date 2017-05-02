@@ -321,6 +321,14 @@ log ">>>>>>test case 2.2 start<<<<<<"
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.2 pass<<<<<<"
 
+#刷写一项查看其它项是否有影响
+#test case 2.3
+log ">>>>>>test case 2.3 start<<<<<<"
+#sh write_midplanevpd_use_ecchvpd.sh w_0_r_1
+[ $? -eq 0 ] || exit 1
+log ">>>>>>test case 2.3 pass<<<<<<"
+
+
 :<<!
 #主备切换后，双控分别刷写，读取对比
 #test case 2.2

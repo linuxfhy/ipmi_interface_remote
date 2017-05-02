@@ -3,6 +3,7 @@
 AWKCMD=awk
 LSCMD=ls
 trcfile="/dumps/scrumtest.trc"
+g_para_1=$1
 
 function log()
 {
@@ -14,7 +15,7 @@ function write_and_check_vpd()
 {
     writecmd="/compass/ec_chvpd -w -n $1 -v $2"
 
-    if [[ $1 =~ "w_0_r_1" ]]
+    if [[ ${g_para_1} =~ "w_0_r_1" ]]
     then
         log "write use cmc0,read use cmc1,close cmc1"
         ifconfig eth2 up
@@ -30,7 +31,7 @@ function write_and_check_vpd()
 
     readcmd="/compass/ec_chvpd -r -n $1"
 
-    if [[ $1 =~ "w_0_r_1" ]]
+    if [[ ${g_para_1} =~ "w_0_r_1" ]]
     then
         log "write use cmc0,read use cmc1,close cmc0"
         ifconfig eth2 down

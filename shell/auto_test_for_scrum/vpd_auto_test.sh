@@ -38,8 +38,9 @@ remote_ip=100.2.45.177
 
 kill_node -f
 
+
 :<<!
-#!
+!
 
 
 #test case 1.1
@@ -102,7 +103,7 @@ function test_case_fun_1_1 ()
 }
 
 log ">>>>>>test case 1.1 start<<<<<<"
-test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
+#test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 1.1 pass<<<<<<"
 
@@ -167,7 +168,7 @@ function test_case_fun_1_2
 }
 
 log ">>>>>>test case 1.2 start<<<<<<"
-test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
+#test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 1.2 pass<<<<<<"
 
@@ -233,7 +234,7 @@ function test_case_fun_1_3()
 }
 
 log ">>>>>>test case 1.3 start<<<<<<"
-test_case_fun_1_3 write_canistervpd_optimized.sh
+#test_case_fun_1_3 write_canistervpd_optimized.sh
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 1.3 pass<<<<<<"
 
@@ -298,7 +299,7 @@ function test_case_fun_1_4()
 }
 
 log ">>>>>>test case 1.4 start<<<<<<"
-test_case_fun_1_4 write_canistervpd_use_ecchvpd.sh
+#test_case_fun_1_4 write_canistervpd_use_ecchvpd.sh
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 1.4 pass<<<<<<"
 
@@ -312,7 +313,6 @@ log ">>>>>>test case 2.1 pass<<<<<<"
 
 #设置IPMI主从命令
 #ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x00/01
-!
 
 #通过主CMC进行刷写，备CMC进行读取
 #test case 2.2
@@ -326,7 +326,7 @@ log ">>>>>>test case 2.2 pass<<<<<<"
 #test case 2.2
 log ">>>>>>test case 2.2 start<<<<<<"
 timeout -k1 2 ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x00
-test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
+#test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
 [ $? -eq 0 ] || exit 1
 timeout -k1 2 ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x01
 log ">>>>>>test case 2.2 pass<<<<<<"
@@ -400,7 +400,7 @@ function test_case_fun_2_3()
     return 0
 }
 log ">>>>>>test case 2.3 start<<<<<<"
-test_case_fun_2_3 write_midplanevpd_optimized_anyCPUcnt.sh
+#test_case_fun_2_3 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.3 pass<<<<<<"
 
@@ -408,7 +408,7 @@ log ">>>>>>test case 2.3 pass<<<<<<"
 #test case 2.4
 log ">>>>>>test case 2.4 start<<<<<<"
 ifconfig eth2 down
-test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
+#test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || {
     ifconfig eth2 up
     exit 1
@@ -420,7 +420,7 @@ log ">>>>>>test case 2.4 pass<<<<<<"
 #test case 2.5
 log ">>>>>>test case 2.5 start<<<<<<"
 ifconfig eth3 down
-test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
+#test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || {
     ifconfig eth3 up
     exit 1
@@ -461,7 +461,7 @@ function test_case_fun_4_1()
     return 0
 }
 log ">>>>>>test case 4.1 start<<<<<<"
-test_case_fun_4_1
+#test_case_fun_4_1
 [ $? -eq 0 ] || {
     exit 1
 }
@@ -475,14 +475,14 @@ function test_case_fun_6_1()
     sh write_midplanevpd_use_ecchvpd_inject_err.sh $1
 }
 log ">>>>>>test case 6.1 start<<<<<<"
-test_case_fun_6_1 timeout
+#test_case_fun_6_1 timeout
 [ $? -eq 0 ] || {
     exit 1
 }
 log ">>>>>>test case 6.1 pass <<<<<<"
 
 log ">>>>>>test case 6.2 start<<<<<<"
-test_case_fun_6_1 short
+#test_case_fun_6_1 short
 [ $? -eq 0 ] || {
     exit 1
 }

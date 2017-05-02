@@ -312,7 +312,16 @@ log ">>>>>>test case 2.1 pass<<<<<<"
 
 #设置IPMI主从命令
 #ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x00/01
+!
 
+#通过主CMC进行刷写，备CMC进行读取
+#test case 2.2
+log ">>>>>>test case 2.2 start<<<<<<"
+test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh w_0_r_1
+[ $? -eq 0 ] || exit 1
+log ">>>>>>test case 2.2 pass<<<<<<"
+
+:<<!
 #主备切换后，双控分别刷写，读取对比
 #test case 2.2
 log ">>>>>>test case 2.2 start<<<<<<"
@@ -458,7 +467,7 @@ test_case_fun_4_1
 }
 log ">>>>>>test case 4.1 pass<<<<<<"
 
-!
+
 #注入一次执行命令超时
 #test case 6.1
 function test_case_fun_6_1()
@@ -478,7 +487,7 @@ test_case_fun_6_1 short
     exit 1
 }
 log ">>>>>>test case 6.2 pass <<<<<<"
-
+!
 
 log "============test loop $1 end============" >>${trcfile}
 exit 0

@@ -13,31 +13,47 @@ function log()
 function write_and_check_vpd()
 {
     writecmd="/compass/ec_chvpd -w -n $1 -v $2"
+
+    if [[ $1 =~ "w_0_r_1" ]]
+    then
+        log "write use cmc0,read use cmc1,close cmc1"
+        ifconfig eth2 up
+        ifconfig eth3 down
+    fi
+
     ${writecmd}
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
         log "cmd exec failed,cmd:${writecmd}, cmd_rc:${cmd_rc}"
         return ${cmd_rc}
     }
-    
+
     readcmd="/compass/ec_chvpd -r -n $1"
+
+    if [[ $1 =~ "w_0_r_1" ]]
+    then
+        log "write use cmc0,read use cmc1,close cmc0"
+        ifconfig eth2 down
+        ifconfig eth3 up
+    fi
+
     readresult=$(${readcmd})
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
         log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
         return ${cmd_rc}
     }
-   
+
    #readresult="${readresult}222" #inject error
     #log "w_cmd is ${writecmd}"
     #log "r_cmd is ${readcmd}"
     #log "read result is ${readresult}"
-    
+
     [ ${readresult} != $2 ] && {
     log "read_write mismatch,read:${readresult},write:$2"
     return 1
     }
-    
+
     return 0
 }
 

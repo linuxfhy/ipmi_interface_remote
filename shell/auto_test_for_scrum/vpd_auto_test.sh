@@ -323,8 +323,13 @@ log ">>>>>>test case 2.2 pass<<<<<<"
 
 #刷写一项查看其它项是否有影响
 #test case 2.3
+function test_case_fun_2_3()
+{
+    sh write_midplanevpd_use_ecchvpd.sh w_affec
+    [ $? -eq 0 ] || exit 1
+}
 log ">>>>>>test case 2.3 start<<<<<<"
-#sh write_midplanevpd_use_ecchvpd.sh w_affec
+test_case_fun_2_3
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.3 pass<<<<<<"
 

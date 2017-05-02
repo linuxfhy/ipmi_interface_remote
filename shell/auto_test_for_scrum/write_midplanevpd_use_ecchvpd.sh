@@ -149,11 +149,11 @@ while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]; do
         cmd_rc=$?
         [ ${cmd_rc} -eq 0 ] || {
             log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
-            return ${cmd_rc}
+            exit ${cmd_rc}
         }
         [ ${readresult} != ${tmp_arr[1]} ] && {
             log "read_write mismatch,read:${readresult},write:$2"
-            return 1
+            exit 1
         }
     done
 

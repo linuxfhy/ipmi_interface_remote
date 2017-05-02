@@ -317,7 +317,7 @@ log ">>>>>>test case 2.1 pass<<<<<<"
 #通过主CMC进行刷写，备CMC进行读取
 #test case 2.2
 log ">>>>>>test case 2.2 start<<<<<<"
-test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh w_0_r_1
+#sh write_midplanevpd_use_ecchvpd.sh w_0_r_1
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.2 pass<<<<<<"
 

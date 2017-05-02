@@ -130,36 +130,37 @@ do
 done
 
 #上一次循环写入每一项相当于初始化，第二次写入每一项时需要判断对其它项有没有影响
-while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]; do
-    write_and_check_vpd_encap ${vpdfield[$arr_index]}
-    #log ${vpdfield[$arr_index]}
-    [ $? -eq 0 ] || {
-        write_ok=0
-        break
-    }
+if [[ ${g_para_1} =~ "w_affec" ]]; then
+    while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]; do
+        write_and_check_vpd_encap ${vpdfield[$arr_index]}
+        #log ${vpdfield[$arr_index]}
+        [ $? -eq 0 ] || {
+            write_ok=0
+            break
+        }
 
-    arr_index_j=0
-    while [ $((${arr_index_j})) -lt $((${arr_mem_cnt})) ]; do
-        if [ ${arr_index_j} = ${arr_index} ]; then
-            continue
-        fi
-        tmp_arr=(${vpdfield[$arr_index]})
-        readcmd="/compass/ec_chvpd -r -n ${tmp_arr[0]}"
-        readresult=$(${readcmd})
-        cmd_rc=$?
-        [ ${cmd_rc} -eq 0 ] || {
-            log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
-            exit ${cmd_rc}
-        }
-        [ ${readresult} != ${tmp_arr[1]} ] && {
-            log "read_write mismatch,read:${readresult},write:$2"
-            exit 1
-        }
+        arr_index_j=0
+        while [ $((${arr_index_j})) -lt $((${arr_mem_cnt})) ]; do
+            if [ ${arr_index_j} = ${arr_index} ]; then
+                continue
+            fi
+            tmp_arr=(${vpdfield[$arr_index]})
+            readcmd="/compass/ec_chvpd -r -n ${tmp_arr[0]}"
+            readresult=$(${readcmd})
+            cmd_rc=$?
+            [ ${cmd_rc} -eq 0 ] || {
+                log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
+                exit ${cmd_rc}
+            }
+            [ ${readresult} != ${tmp_arr[1]} ] && {
+                log "read_write mismatch,read:${readresult},write:$2"
+                exit 1
+            }
+        done
+
+        arr_index_j=$(($arr_index_j+1))
     done
-
-    arr_index_j=$(($arr_index_j+1))
-done
-
+fi
 
 if [ $write_ok = 1 ]; then
     log "write midplane vpd OK"

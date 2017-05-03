@@ -113,7 +113,7 @@ if [[ ${g_para_1} =~ "w_affec" ]]; then
 
         arr_index_j=0
         while [ $((${arr_index_j})) -lt $((${arr_mem_cnt})) ]; do
-            log "arr_index_j is ${arr_index_j}, arr_index is ${arr_index} before continue"
+            #log "arr_index_j is ${arr_index_j}, arr_index is ${arr_index} before continue"
             if [ "${arr_index_j}" = "${arr_index}" ]; then
                 arr_index_j=$(($arr_index_j+1))
                 continue
@@ -126,7 +126,7 @@ if [[ ${g_para_1} =~ "w_affec" ]]; then
                 log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
                 exit ${cmd_rc}
             }
-            log "read_write compare,read:${readresult},write:${tmp_arr[1]}"
+            #log "read_write compare,read:${readresult},write:${tmp_arr[1]}"
             write_data=${tmp_arr[1]}
             if [[ ${tmp_arr[0]} =~ "vpd_can_version_e" ]]
             then

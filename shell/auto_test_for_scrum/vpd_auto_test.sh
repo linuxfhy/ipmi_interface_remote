@@ -329,7 +329,7 @@ function test_case_fun_2_3()
     [ $? -eq 0 ] || exit 1
 }
 log ">>>>>>test case 2.3 start<<<<<<"
-test_case_fun_2_3
+#test_case_fun_2_3
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.3 pass<<<<<<"
 
@@ -418,11 +418,11 @@ log ">>>>>>test case 2.6 start<<<<<<"
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.6 pass<<<<<<"
 
-:<<!
+
 
 #模拟CMC0(master)不通
-#test case 2.4
-log ">>>>>>test case 2.4 start<<<<<<"
+#test case 2.7
+log ">>>>>>test case 2.7 start<<<<<<"
 ifconfig eth2 down
 #test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || {
@@ -430,11 +430,12 @@ ifconfig eth2 down
     exit 1
 }
 ifconfig eth2 up
-log ">>>>>>test case 2.4 pass<<<<<<"
+log ">>>>>>test case 2.7 pass<<<<<<"
+
 
 #模拟CMC1(slave)不通
-#test case 2.5
-log ">>>>>>test case 2.5 start<<<<<<"
+#test case 2.8
+log ">>>>>>test case 2.8 start<<<<<<"
 ifconfig eth3 down
 #test_case_fun_1_1 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || {
@@ -442,15 +443,31 @@ ifconfig eth3 down
     exit 1
 }
 ifconfig eth3 up
-log ">>>>>>test case 2.5 pass<<<<<<"
+log ">>>>>>test case 2.8 pass<<<<<<"
 
-log ">>>>>>test case 2.6/2.7 need remove cmc handly, mark as pass<<<<<<"
+
+log ">>>>>>test case 2.9/2.10 need remove cmc handly, mark as pass<<<<<<"
+
 
 #读写canister VPD
-#test case 3.1/3.1
-log ">>>>>>test case 3.1/3.2 start<<<<<<"
+#test case 3.1/3.3
+log ">>>>>>test case 3.1/3.3 start<<<<<<"
 log "These two case are same as case 1.3"
-log ">>>>>>test case 3.1/3.2 pass<<<<<<"
+log ">>>>>>test case 3.1/3.3 pass<<<<<<"
+
+#刷写一项查看其它项是否有影响
+#test case 3.2
+function test_case_fun_3_2()
+{
+    sh write_canistervpd_use_ecchvpd.sh w_affec
+    [ $? -eq 0 ] || exit 1
+}
+log ">>>>>>test case 3.2 start<<<<<<"
+#test_case_fun_3_2
+[ $? -eq 0 ] || exit 1
+log ">>>>>>test case 3.2 pass<<<<<<"
+
+:<<!
 
 #正常情况下启动ecmain
 #test case 4.1

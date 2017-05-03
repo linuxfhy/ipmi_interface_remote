@@ -3,6 +3,7 @@
 AWKCMD=awk
 LSCMD=ls
 trcfile="/dumps/scrumtest.trc"
+g_para_1=$1
 
 function log()
 {
@@ -91,6 +92,45 @@ do
     }
     arr_index=$(($arr_index+1))
 done
+
+#上一次循环写入每一项相当于初始化，第二次写入每一项时需要判断对其它项有没有影响
+if [[ ${g_para_1} =~ "w_affec" ]]; then
+    arr_index=0
+    log "check whether other vpd fields will be changed when we write one field"
+    while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]; do
+        write_and_check_vpd_encap ${vpdfield[$arr_index]}
+        #log ${vpdfield[$arr_index]}
+        [ $? -eq 0 ] || {
+            write_ok=0
+            break
+        }
+
+        arr_index_j=0
+        while [ $((${arr_index_j})) -lt $((${arr_mem_cnt})) ]; do
+            log "arr_index_j is ${arr_index_j}, arr_index is ${arr_index} before continue"
+            if [ "${arr_index_j}" = "${arr_index}" ]; then
+                arr_index_j=$(($arr_index_j+1))
+                continue
+            fi
+            tmp_arr=(${vpdfield[$arr_index_j]})
+            readcmd="/compass/ec_chvpd -r -n ${tmp_arr[0]}"
+            readresult=$(${readcmd})
+            cmd_rc=$?
+            [ ${cmd_rc} -eq 0 ] || {
+                log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
+                exit ${cmd_rc}
+            }
+            log "read_write compare,read:${readresult},write:${tmp_arr[1]}"
+            [ ${readresult} != ${tmp_arr[1]} ] && {
+                log "read_write mismatch,read:${readresult},write:${tmp_arr[1]}"
+                exit 1
+            }
+            arr_index_j=$(($arr_index_j+1))
+        done
+
+        arr_index=$(($arr_index+1))
+    done
+fi
 
 if [ $write_ok = 1 ]; then
     log "write canister vpd OK"

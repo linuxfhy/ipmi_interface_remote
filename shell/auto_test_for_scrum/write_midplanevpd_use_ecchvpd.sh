@@ -50,8 +50,15 @@ function write_and_check_vpd()
     #log "r_cmd is ${readcmd}"
     #log "read result is ${readresult}"
 
-    [ ${readresult} != $2 ] && {
-        log "read_write mismatch,read:${readresult},write:$2"
+    write_data=$2
+
+    if [[ $1 =~ "vpd_mid_version_e" ]] || [[ $1 =~ "vpd_can_version_e" ]]
+    then
+        write_data="0${write_data}"
+    fi
+
+    [ ${readresult} != ${write_data} ] && {
+        log "read_write mismatch,read:${readresult},write:${write_data}"
         return 1
     }
 

@@ -333,33 +333,34 @@ test_case_fun_2_3
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 2.3 pass<<<<<<"
 
+log ">>>>>>test case 2.4 need reset cmc handly, mark as pass<<<<<<"
 
-:<<!
 #主备切换后，双控分别刷写，读取对比
-#test case 2.2
-log ">>>>>>test case 2.2 start<<<<<<"
+#test case 2.5
+log ">>>>>>test case 2.5 start<<<<<<"
 timeout -k1 2 ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x00
 #test_case_fun_1_2 write_midplanevpd_use_ecchvpd.sh
 [ $? -eq 0 ] || exit 1
 timeout -k1 2 ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x01
-log ">>>>>>test case 2.2 pass<<<<<<"
+log ">>>>>>test case 2.5 pass<<<<<<"
+
 
 #刷写后进行切换主备，双控读取对比
-#test case 2.3
-function test_case_fun_2_3()
+#test case 2.6
+function test_case_fun_2_6()
 {
-    total_step_case_2_3=10
+    total_step_case_2_6=10
     cur_step=1
     for((i=0;i<2;i++))
     do
         if [ $i -eq 0 ];then
              cur_node="local"
-             log "STEP ${cur_step} of ${total_step_case_2_3}:exec $1 on local node"
+             log "STEP ${cur_step} of ${total_step_case_2_6}:exec $1 on local node"
              cur_step=$((${cur_step}+1))
              sh $1
         else
             cur_node="remote"
-            log "STEP ${cur_step} of ${total_step_case_2_3}:exec $1 on remote node"
+            log "STEP ${cur_step} of ${total_step_case_2_6}:exec $1 on remote node"
             cur_step=$((${cur_step}+1))
             remote_exec ". /home/debug/test_profile; sh /home/root/$1"
         fi
@@ -369,7 +370,7 @@ function test_case_fun_2_3()
             exit 1
         }
 
-        log "STEP ${cur_step} of ${total_step_case_2_3}:set cmc0 $i(1:master 0:slave)"
+        log "STEP ${cur_step} of ${total_step_case_2_6}:set cmc0 $i(1:master 0:slave)"
         cur_step=$((${cur_step}+1))
         ipmitool -H 192.168.200.42 -U admin -P admin raw 0x30 0x22 0x0$i
         [ $? -eq 0 ] || {
@@ -380,7 +381,7 @@ function test_case_fun_2_3()
         local_can_id=$(cat /dev/canisterid)
         local_cmd="ec_chvpd -sa"
         local_file_path="/home/vpd_test/ec_chvpd_result_${local_can_id}"
-        log "STEP ${cur_step} of ${total_step_case_2_3}:exec ec_chvpd -sa on local node"
+        log "STEP ${cur_step} of ${total_step_case_2_6}:exec ec_chvpd -sa on local node"
         cur_step=$((${cur_step}+1))
 
         ${local_cmd} >${local_file_path}
@@ -390,7 +391,7 @@ function test_case_fun_2_3()
         }
 
         remot_can_id=$(remote_exec "cat /dev/canisterid")
-        log "STEP ${cur_step} of ${total_step_case_2_3}:exec ec_chvpd -sa on remote node"
+        log "STEP ${cur_step} of ${total_step_case_2_6}:exec ec_chvpd -sa on remote node"
         cur_step=$((${cur_step}+1))
         remote_exec ". /home/debug/test_profile; /compass/ec_chvpd -sa" >/home/vpd_test/ec_chvpd_result_${remot_can_id}
         [ $? -eq 1 ] || {
@@ -398,7 +399,7 @@ function test_case_fun_2_3()
             exit 1
         }
 
-        log "STEP ${cur_step} of ${total_step_case_2_3}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
+        log "STEP ${cur_step} of ${total_step_case_2_6}:compare ec_chvpd_result_${local_can_id} ec_chvpd_result_${remot_can_id}"
         tmp_cmd="diff /home/vpd_test/ec_chvpd_result_${local_can_id} /home/vpd_test/ec_chvpd_result_${remot_can_id}"
         ${tmp_cmd}
         [ $? -eq 0 ] || {
@@ -412,10 +413,12 @@ function test_case_fun_2_3()
     done
     return 0
 }
-log ">>>>>>test case 2.3 start<<<<<<"
-#test_case_fun_2_3 write_midplanevpd_optimized_anyCPUcnt.sh
+log ">>>>>>test case 2.6 start<<<<<<"
+#test_case_fun_2_6 write_midplanevpd_optimized_anyCPUcnt.sh
 [ $? -eq 0 ] || exit 1
-log ">>>>>>test case 2.3 pass<<<<<<"
+log ">>>>>>test case 2.6 pass<<<<<<"
+
+:<<!
 
 #模拟CMC0(master)不通
 #test case 2.4

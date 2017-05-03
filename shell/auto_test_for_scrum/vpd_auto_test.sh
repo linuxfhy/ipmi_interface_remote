@@ -467,7 +467,7 @@ test_case_fun_3_2
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 3.2 pass<<<<<<"
 
-:<<!
+
 
 #正常情况下启动ecmain
 #test case 4.1
@@ -520,7 +520,6 @@ log ">>>>>>test case 6.2 start<<<<<<"
     exit 1
 }
 log ">>>>>>test case 6.2 pass <<<<<<"
-!
 
 log "============test loop $1 end============" >>${trcfile}
 exit 0

@@ -463,7 +463,7 @@ function test_case_fun_3_2()
     [ $? -eq 0 ] || exit 1
 }
 log ">>>>>>test case 3.2 start<<<<<<"
-#test_case_fun_3_2
+test_case_fun_3_2
 [ $? -eq 0 ] || exit 1
 log ">>>>>>test case 3.2 pass<<<<<<"
 

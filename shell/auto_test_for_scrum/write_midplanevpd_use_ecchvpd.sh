@@ -131,6 +131,8 @@ done
 
 #上一次循环写入每一项相当于初始化，第二次写入每一项时需要判断对其它项有没有影响
 if [[ ${g_para_1} =~ "w_affec" ]]; then
+    arr_index=0
+    log "check whether other vpd fields will be changed when we write one field"
     while [ $((${arr_index})) -lt $((${arr_mem_cnt})) ]; do
         write_and_check_vpd_encap ${vpdfield[$arr_index]}
         #log ${vpdfield[$arr_index]}
@@ -144,6 +146,7 @@ if [[ ${g_para_1} =~ "w_affec" ]]; then
             if [ ${arr_index_j} = ${arr_index} ]; then
                 continue
             fi
+            log "arr_index_j is ${arr_index_j}, arr_index is ${arr_index}"
             tmp_arr=(${vpdfield[$arr_index]})
             readcmd="/compass/ec_chvpd -r -n ${tmp_arr[0]}"
             readresult=$(${readcmd})
@@ -156,9 +159,10 @@ if [[ ${g_para_1} =~ "w_affec" ]]; then
                 log "read_write mismatch,read:${readresult},write:$2"
                 exit 1
             }
+            arr_index_j=$(($arr_index_j+1))
         done
 
-        arr_index_j=$(($arr_index_j+1))
+        arr_index=$(($arr_index+1))
     done
 fi
 

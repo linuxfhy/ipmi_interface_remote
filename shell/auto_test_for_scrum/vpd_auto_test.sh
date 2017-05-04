@@ -505,6 +505,7 @@ log ">>>>>>test case 4.1 pass<<<<<<"
 #test case 6.1
 function test_case_fun_6_1()
 {
+    kill_node -f
     sh write_midplanevpd_use_ecchvpd_inject_err.sh $1
 }
 log ">>>>>>test case 6.1 start<<<<<<"

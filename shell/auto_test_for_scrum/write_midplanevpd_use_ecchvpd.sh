@@ -26,6 +26,7 @@ function write_and_check_vpd()
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
         log "cmd exec failed,cmd:${writecmd}, cmd_rc:${cmd_rc}"
+        ifconfig eth3 up
         return ${cmd_rc}
     }
 
@@ -42,6 +43,7 @@ function write_and_check_vpd()
     cmd_rc=$?
     [ ${cmd_rc} -eq 0 ] || {
         log "cmd exec failed,cmd:${readcmd}, cmd_rc:${cmd_rc}"
+        ifconfig eth2 up
         return ${cmd_rc}
     }
 
@@ -62,7 +64,7 @@ function write_and_check_vpd()
         log "read_write mismatch,read:${readresult},write:${write_data}"
         return 1
     }
-
+    ifconfig eth2 up
     return 0
 }
 

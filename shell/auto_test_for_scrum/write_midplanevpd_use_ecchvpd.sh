@@ -58,6 +58,7 @@ function write_and_check_vpd()
     fi
 
     [ ${readresult} != ${write_data} ] && {
+        ifconfig eth2 up
         log "read_write mismatch,read:${readresult},write:${write_data}"
         return 1
     }

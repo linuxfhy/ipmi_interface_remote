@@ -3,3 +3,6 @@ cat >> $F_JNL <<- EOF
 		Start| $start_date $(id -un)($(id -u)) | $start_time |
 		Start| $$ $(uname -a) |
 EOF
+
+2.sed的使用示例
+   2.1)date +"%Y-%m-%d-%H-%M-%S" | sed 's/-//g'

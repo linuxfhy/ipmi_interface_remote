@@ -1,0 +1,5 @@
+1.cat 文本块到文件中
+cat >> $F_JNL <<- EOF
+		Start| $start_date $(id -un)($(id -u)) | $start_time |
+		Start| $$ $(uname -a) |
+EOF

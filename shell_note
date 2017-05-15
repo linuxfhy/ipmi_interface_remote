@@ -6,3 +6,5 @@ EOF
 
 2.sed的使用示例
    2.1)date +"%Y-%m-%d-%H-%M-%S" | sed 's/-//g'
+
+3.typeset align=${1?"*** align, L/R/M"}  #如果没有第一个参数，输出双引号中的报错信息。

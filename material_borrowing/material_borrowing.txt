@@ -7,3 +7,4 @@
 4.20170419 to zhangrenfeng 4*16G FC *4, lend to liuying
 5.20170508 to huzhengjian 4*8G FC *3
 6.20170519 from guoqiang CPU*6 MEMORY*25 (keep for zhangrenfeng)
+7.20170522 to cuibo 8032 FC*4

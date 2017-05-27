@@ -12,3 +12,4 @@
 9.20170525 to huangchen IBM 2port 16G FC *2 with 8 sfp(高健 6680代取)
 10.20170526 to liyaming(zhengzhou) 4*8G FC *2 with 8 sfp
        sn:00MJ027YM11MY69W020,00MJ027YM11MY69W017
+11.20170527 to zuodengkai 8073 SAS *1

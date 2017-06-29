@@ -21,3 +21,4 @@
 15.20170606 to cuibo 8032 FC *2 in LAB, S05 South,Floor 2
    sn:00MJ027YM11MY69W043,00MJ027YM11MY69W05A
 16.20170627 to liyongliang 8073 SAS*1 for FW update
+17.20170629 to chenyangjiao 8073 SAS*1

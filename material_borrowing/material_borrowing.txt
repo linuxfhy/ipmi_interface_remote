@@ -24,3 +24,4 @@
 16.20170627 to liyongliang 8073 SAS*1 for FW update
 17.20170629 to chenyangjiao 8073 SAS*1
    20170630 return back 8073 SAS*1
+18.20170704 return back IBM 2port 16GFC *4 TO LAB

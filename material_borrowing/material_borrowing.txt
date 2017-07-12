@@ -6,7 +6,7 @@
 3.20170207 to liuximeng 8032 FC  *8
 4.20170419 to zhangrenfeng 4*16G FC *4, lend to liuying
   20170620 this 4 cards lend to hanteng.
-  20170721 to gaojian 4*16 port AHB3 FC *1 by hanteng
+  20170721 to gaojian(zhangxueqing test) 4*16 port AHB3 FC *1 by hanteng
 5.20170508 to huzhengjian 4*8G FC *3
 6.20170519 from guoqiang CPU*6 MEMORY*25 (keep for zhangrenfeng)
 7.20170522 to cuibo 8032 FC*4

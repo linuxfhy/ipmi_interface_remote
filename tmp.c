@@ -1,5 +1,7 @@
 #include <stdio.h>
-#define DBG_MSG(k,(l)) printf (l)
+#include <string.h>
 void main () {
-    DBG_MSG(1,("Hello World\n"));
+	int a,b;
+	sscanf("103","%1x%02x",&a,&b);
+	printf("a=%x, b=%x", a, b);
 }

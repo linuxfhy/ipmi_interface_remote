@@ -4,10 +4,13 @@
     2-1)20170303 return back 2
 	2-2)20170308 return back 1
 3.20170207 to liuximeng 8032 FC  *8
+  8张卡已转借
 4.20170419 to zhangrenfeng 4*16G FC *4, lend to liuying
   20170620 this 4 cards lend to hanteng.
   20170721 to gaojian(zhangxueqing test) 4*16 port AHB3 FC *1 by hanteng
 5.20170508 to huzhengjian 4*8G FC *3
+  20170802 return back 1;
+  20170802 other 2 cards has been lend to huzhengjian in LAB system.
 6.20170519 from guoqiang CPU*6 MEMORY*25 (keep for zhangrenfeng)
 7.20170522 to cuibo 8032 FC*4
 8.20170523 to huangchen IBM 2port 16G FC *2 with 8 sfp

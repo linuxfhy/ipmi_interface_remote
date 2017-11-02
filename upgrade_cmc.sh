@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# upgrade_cmc.sh - EPROM/BIOS upgrade script for I01
+# upgrade_cmc.sh - cmc upgrade script for A01, for cmc fault and replacement
 #
 # start_Copyright_Notice
 # end_Copyright_Notice
@@ -12,7 +12,7 @@ function decompress_cmcfw
     rm -rf /tmp/cmcfw
     mkdir -p /tmp/cmcfw
     cd /tmp/cmcfw
-    
+
     tar -xzOf /compass/00000006 compass/firmwareA01.tgz | tar -xzf -
 }
 
@@ -25,6 +25,7 @@ decompress_cmcfw
 export CMCFWDIR=/tmp/cmcfw
 needrb=0
 source $CMCFWDIR/codever
+chmod 777 $CMCFWDIR/Yafuflash_CMC
 cmc0_ver=""
 cmc1_ver=""
 cmc0_cpld_ver=""
@@ -211,7 +212,7 @@ function get_cmc_version
 		cmc0="unknown"
 		cmc1="unknown"
 		res=1
-		printf "$(date): get cmc version failed for unkown error(%s)\n" \ 
+		printf "$(date): get cmc version failed for unkown error(%s)\n" \
 			$rc >> $FW_LOG
 	else
 		#printf "$(date): get cmc version and maybe no error\n" >> $FW_LOG
@@ -382,7 +383,7 @@ function switch_cmc_retry
 	fi
 
 	while(( $i < $2 ));do
-		switch_master_cmc $1 #DONE: define switch_master_cmc
+		switch_master_cmc $1
 		if [[ $? == 0 ]];then
 			break;
 		fi
@@ -413,7 +414,7 @@ function get_upgrade_ip {
 	typeset cmc_ip=""
 	typeset rc=0
 	
-	cid=$(get_canisterid) #DONE:
+	cid=$(get_canisterid)
 	if (( $? != 0 ));then
 		echo $( date )": get canisterid failed" >> $FW_LOG
 		rc=1
@@ -473,20 +474,20 @@ function close_watch_dog
 	typeset cmc_ip=""
 	typeset rc=0
 
-	cmc_ip=$(get_upgrade_ip) #DONE:
+	cmc_ip=$(get_upgrade_ip)
 
 	if (( $? != 0 ));then
 		echo $( date )": get upgrade ip failed" >> $FW_LOG
 		rc=1
 		return $rc
 	fi
-	do_close_dog "$cmc_ip" #DONE:
+	do_close_dog "$cmc_ip"
 	if (( $? != 0 ));then
 		echo $( date )": do close watch dog failed" >> $FW_LOG
 		rc=1
 		return $rc
 	fi
-	check_close_dog "$cmc_ip" #DONE:
+	check_close_dog "$cmc_ip"
 	if (( $? != 0 ));then
 		echo $( date )": watch dog still work" >> $FW_LOG
 		rc=1
@@ -501,7 +502,7 @@ function yafu_upgrade_cmc
 		return 1
 	fi
 
-	close_watch_dog 
+	close_watch_dog
 	if (( $? != 0 ));then
 		printf "$(date): close watch dog forcely failed\n" >> $FW_LOG
 		return 1
@@ -553,7 +554,7 @@ function do_upgrade_cmc0
 		return 1
 	fi
 	#if want to upgrade cmc0, need check cmc1 whether upgrade or not
-	check_cmc_upgrade cmc1  #DONE:define check_cmc_upgrade
+	check_cmc_upgrade cmc1
 	if [[ $? != 0 ]];then
 		notupgrade=1
 		return 1
@@ -566,10 +567,10 @@ function do_upgrade_cmc0
 		return 1
 	fi
 	#write cmc upgrade flag to eeprom
-	set_upgrade_flag cmc0 #DONE:define set_upgrade_flag
+	set_upgrade_flag cmc0
 	if [[ $? != 0 ]];then
 		notupgrade=1
-		clear_upgrade_flag cmc0 #DONE:define clear_upgrade_flag
+		clear_upgrade_flag cmc0
 		if [[ $? != 0 ]];then
 			echo $( date )": clear eeprom cmc0 flag failed " >> $FW_LOG
 		fi
@@ -586,7 +587,7 @@ function do_upgrade_cmc0
 		return 1
 	fi
 	#retry count is 3 switch to cmc1 whose value is 2
-	switch_cmc_retry 2 3 #DONE:define switch_cmc_retry
+	switch_cmc_retry 2 3
 	if [[ $? != 0 ]];then
 		notupgrade=1
 		clear_upgrade_flag cmc0
@@ -602,7 +603,7 @@ function do_upgrade_cmc0
 			echo $( date )": upgrade_ip:standard_ip "$upgrade_ip" "$standard_ip >> $FW_LOG
 		else
 			echo $( date )": retry to get upgrade ip" >> $FW_LOG
-			wait_reboot 100 $standard_ip "cmc0" #DONE:define wait_reboot
+			wait_reboot 100 $standard_ip "cmc0"
 			if (( $? == 0 )); then
 				upgrade_ip=`/compass/mnet show ipaddr | awk 'NR==2{print $7}'`
 			else
@@ -621,7 +622,7 @@ function do_upgrade_cmc0
 	fi
 	cd $CMCFWDIR
 	#Maybe standy cmc(cmc0) is reboot, need to wait
-	wait_reboot 100 "$standard_ip" cmc0 #DONE:define wait_reboot
+	wait_reboot 100 "$standard_ip" cmc0
 	if [[ $? != 0 ]];then
 		not_upgrade=1
 		clear_upgrade_flag cmc0
@@ -632,13 +633,13 @@ function do_upgrade_cmc0
 	fi
 	#use wiston tool to update
 	if [[ $1 == "cmc" ]];then
-		yafu_upgrade_cmc $upgrade_ip "cmc0" #DONE:define yafu_upgrade_cmc
+		yafu_upgrade_cmc $upgrade_ip "cmc0"
 		if [[ $? != 0 ]];then
 			notupgrade=1
 			cmconly=1
 		fi
 	else
-		yafu_upgrade_cmc_cpld $upgrade_ip "cmc0" #DONE:define yafu_upgrade_cmc_cpld
+		yafu_upgrade_cmc_cpld $upgrade_ip "cmc0"
 		if [[ $? != 0 ]];then
 			notupgrade=1
 			cmconly=1
@@ -677,7 +678,7 @@ function do_upgrade_cmc1
 	set_upgrade_flag cmc1
 	if [[ $? != 0 ]];then
 		notupgrade=1
-		clear_upgrade_flag cmc1 #DONE:define clear_upgrade_flag
+		clear_upgrade_flag cmc1
 		if [[ $? != 0 ]];then
 			echo $( date )": clear eeprom cmc1 flag failed " >> $FW_LOG
 		fi		
@@ -770,11 +771,11 @@ function do_upgrade_cmc
 		return 1
 	fi
 
-	if [[ $canisterid == 1 && $cmc0_ver != $DCODEVER ]] || 
+	if [[ $canisterid == 1 && $cmc0_ver != $DCODEVER ]] ||
 	   [[ $canisterid == 1 && ${debug_option["cmc"]} == "force" ]]
 	then
 		echo $( date )": start to upgrade cmc0" >> $FW_LOG
-		do_upgrade_cmc0 cmc    #DONE:定义do_upgrade_cmc0
+		do_upgrade_cmc0 cmc
 		#notupgrade is set in function do_upgrade
 		#if cmc cause error, do not cause 525
 		if [[ $? != 0 ]];then
@@ -834,7 +835,7 @@ function upgrade_cmc
 	rc=$?
 	
 	if [[ $notupgrade == "1" ]];then
-		add_to_unupgrade "cmc0" "${cmc_ver[0]}" $DCODEVER #TODO:定义add_to_unupgrade
+		add_to_unupgrade "cmc0" "${cmc_ver[0]}" $DCODEVER
 		add_to_unupgrade "cmc1" "${cmc_ver[1]}" $DCODEVER
 		echo $( date )": cmc not upgrade because of some error">> $FW_LOG
 		return 1
@@ -864,7 +865,7 @@ function upgrade_cmc
 		echo $( date )": get two cmc version" >> $FW_LOG
 	fi
 	
-	if [[ ${cmc_ver[0]} == ${cmc_ver[1]} && ${cmc_ver[0]} == $DCODEVER && \  #DONE:解压codever文件并获取DCODEVER
+	if [[ ${cmc_ver[0]} == ${cmc_ver[1]} && ${cmc_ver[0]} == $DCODEVER && \
 		${debug_option["cmc"]} != "force" ]];then
 		echo $( date )": cmc is already up to date" >> $FW_LOG
 		echo $( date )": cmc version: "${cmc_ver[0]} >> $FW_LOG
@@ -875,7 +876,7 @@ function upgrade_cmc
 		cmc0_ver=${cmc_ver[0]}
 		cmc1_ver=${cmc_ver[1]}
 		echo $( date )": cmc0 version: "$cmc0_ver" cmc1 version: "$cmc1_ver >> $FW_LOG
-		do_upgrade_cmc #TODO:增加返回值
+		do_upgrade_cmc
 		return $?
 	fi
 }
@@ -993,12 +994,12 @@ else
 fi
 
 
-is_running=$(ps aux | grep -i "\(firmware.sh\)\|\(upgrade.sh\)\|\(upgrade_cmc.sh\)" | grep -v "grep" | wc -l)
+is_running=$(ps aux | grep -i "\(firmware.sh\)\|\(upgrade.sh\)" | grep -v "grep" | wc -l)
 if [[ $is_running -eq 0 ]];then
-    
+
     #setup the cmc network
     #/compass/manage-network.sh >> $FW_LOG 2>&1
-    
+
     #output prompt to ttyS0
     echo "/compass/upgrade_cmc.sh Start to upgrade firmware, please wait." >> /dev/ttyS0
 	echo "[$(date)]Start to upgrade cmc firmware, please wait." >> $FW_LOG
@@ -1015,7 +1016,7 @@ if [[ $is_running -eq 0 ]];then
     echo "[$(date)]exec firmware.sh rc=$rc" >>$FW_LOG
 	if [[ $notupgrade == "1" ]];then
 	    echo -e '\n\n\n############ NOT UPGRADE INFO ############\n' >> $FW_LOG
-	    show_notupgrade_list #DONE
+	    show_notupgrade_list
     fi
 else
     echo "[$(date)]another upgrade task is running, do nothing" >>${FW_LOG}

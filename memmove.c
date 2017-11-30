@@ -60,7 +60,7 @@ void memmove_test(void* arg, int num, char* str_key, char* str_next_key)
     dest = strstr(arg, str_next_key) +change;
     src = strstr(arg, str_next_key);
     memmove(dest, src, strlen(src));
-    dest = dest + strlen(src);
+    dest = dest + strlen(dest);
     memset(dest,0,  1024);
     dest = strstr(arg, str_key) + strlen(str_key);
     strncpy(dest, value, strlen(value));

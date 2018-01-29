@@ -12,6 +12,7 @@
   20170802 return back 1;
   20170802 other 2 cards has been lend to huzhengjian in LAB system.
 6.20170519 from guoqiang CPU*6 MEMORY*25 (keep for zhangrenfeng)
+  20180129 雪庆取走全部CPU,内存
 7.20170522 to cuibo 8032 FC*4
 8.20170523 to huangchen IBM 2port 16G FC *2 with 8 sfp
 9.20170525 to huangchen IBM 2port 16G FC *2 with 8 sfp(高健 6680代取)
